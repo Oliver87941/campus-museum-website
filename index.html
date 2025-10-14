@@ -1,0 +1,340 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>我们的校园记忆 - 线上数字博物馆</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="css/style.css">
+    <style>
+        .homepage {
+            min-height: 100vh;
+            color: var(--text-color);
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+            padding: 40px 0;
+            transition: background-image 1s ease-in-out;
+            background-size: cover;
+            background-position: center;
+            background-repeat: no-repeat;
+        }
+        
+        .spring-bg { background-image: linear-gradient(rgba(255,255,255,0.7), rgba(255,255,255,0.7)), url('images/backgrounds/spring.jpg'); }
+        .summer-bg { background-image: linear-gradient(rgba(255,255,255,0.7), rgba(255,255,255,0.7)), url('images/backgrounds/summer.jpg'); }
+        .autumn-bg { background-image: linear-gradient(rgba(255,255,255,0.7), rgba(255,255,255,0.7)), url('images/backgrounds/autumn.jpg'); }
+        .winter-bg { background-image: linear-gradient(rgba(255,255,255,0.7), rgba(255,255,255,0.7)), url('images/backgrounds/winter.jpg'); }
+        
+        .logo {
+            margin-bottom: 40px;
+            animation: fadeIn 1.5s ease-out;
+            z-index: 10;
+        }
+        
+        .logo h1 {
+            font-size: 3.5rem;
+            margin-bottom: 15px;
+            color: var(--primary-color);
+            letter-spacing: 2px;
+            text-shadow: 1px 1px 3px rgba(0,0,0,0.1);
+        }
+        
+        .logo p {
+            font-size: 1.5rem;
+            max-width: 700px;
+            margin: 0 auto;
+            color: var(--dark-color);
+            font-weight: 300;
+        }
+        
+        .season-carousel {
+            width: 100%;
+            max-width: 1000px;
+            margin: 40px auto;
+            display: flex;
+            justify-content: space-between;
+            gap: 20px;
+            animation: slideUp 1s ease-out 0.5s both;
+            z-index: 10;
+        }
+        
+        .season-card {
+            flex: 1;
+            background: var(--card-bg);
+            border-radius: 15px;
+            padding: 25px 15px;
+            transition: all 0.3s ease;
+            cursor: pointer;
+            box-shadow: var(--shadow);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+        
+        .season-card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 15px 35px rgba(0,0,0,0.15);
+        }
+        
+        .season-card.active {
+            border: 3px solid var(--accent-color);
+            transform: translateY(-5px);
+        }
+        
+        .season-icon {
+            font-size: 2.5rem;
+            margin-bottom: 15px;
+            color: var(--primary-color);
+            background: rgba(74, 111, 165, 0.1);
+            width: 80px;
+            height: 80px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        
+        .exhibition-previews {
+            width: 100%;
+            max-width: 1100px;
+            margin: 50px auto;
+            display: flex;
+            justify-content: space-between;
+            gap: 25px;
+            animation: slideUp 1s ease-out 0.8s both;
+            z-index: 10;
+        }
+        
+        .exhibition-preview {
+            flex: 1;
+            background: var(--card-bg);
+            border-radius: 15px;
+            padding: 30px 20px;
+            transition: all 0.3s ease;
+            cursor: pointer;
+            box-shadow: var(--shadow);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            text-align: center;
+        }
+        
+        .exhibition-preview:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 15px 35px rgba(0,0,0,0.15);
+        }
+        
+        .preview-icon {
+            font-size: 2.8rem;
+            margin-bottom: 20px;
+            color: var(--accent-color);
+            background: rgba(255, 159, 67, 0.1);
+            width: 90px;
+            height: 90px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        
+        .preview-link {
+            color: var(--secondary-color);
+            text-decoration: none;
+            font-size: 1rem;
+            font-weight: 600;
+            display: inline-flex;
+            align-items: center;
+            transition: all 0.3s;
+            padding: 8px 15px;
+            border-radius: 30px;
+            background: rgba(107, 191, 138, 0.1);
+        }
+        
+        .preview-link:hover {
+            color: white;
+            background: var(--secondary-color);
+        }
+        
+        .enter-museum {
+            margin-top: 50px;
+            animation: pulse 2s infinite;
+            z-index: 10;
+        }
+        
+        .enter-btn {
+            display: inline-block;
+            background: linear-gradient(45deg, var(--primary-color), var(--secondary-color));
+            color: white;
+            padding: 18px 45px;
+            border: none;
+            border-radius: 50px;
+            font-size: 1.3rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-decoration: none;
+            box-shadow: 0 10px 20px rgba(0,0,0,0.15);
+        }
+        
+        .enter-btn:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 15px 25px rgba(0,0,0,0.2);
+        }
+        
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(30px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        
+        @keyframes slideUp {
+            from { opacity: 0; transform: translateY(50px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        
+        @keyframes pulse {
+            0% { transform: scale(1); }
+            50% { transform: scale(1.05); }
+            100% { transform: scale(1); }
+        }
+
+        @media (max-width: 768px) {
+            .season-carousel, .exhibition-previews {
+                flex-direction: column;
+            }
+            
+            .logo h1 {
+                font-size: 2.5rem;
+            }
+            
+            .logo p {
+                font-size: 1.2rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <section id="homepage" class="homepage spring-bg">
+        <div class="floating-elements">
+            <div class="floating-element"><i class="fas fa-book"></i></div>
+            <div class="floating-element"><i class="fas fa-graduation-cap"></i></div>
+            <div class="floating-element"><i class="fas fa-tree"></i></div>
+            <div class="floating-element"><i class="fas fa-pencil-alt"></i></div>
+            <div class="floating-element"><i class="fas fa-music"></i></div>
+        </div>
+        
+        <div class="logo">
+            <h1>我们的校园记忆</h1>
+            <p>线上数字博物馆 - 永不落幕的云端校史馆</p>
+        </div>
+        
+        <div class="season-carousel">
+            <div class="season-card active" data-season="spring">
+                <div class="season-icon"><i class="fas fa-seedling"></i></div>
+                <h3>春之校园</h3>
+                <p>万物复苏，樱花盛开，青春与希望在这里绽放</p>
+            </div>
+            <div class="season-card" data-season="summer">
+                <div class="season-icon"><i class="fas fa-sun"></i></div>
+                <h3>夏之校园</h3>
+                <p>绿树成荫，蝉鸣声声，热情与活力在这里燃烧</p>
+            </div>
+            <div class="season-card" data-season="autumn">
+                <div class="season-icon"><i class="fas fa-leaf"></i></div>
+                <h3>秋之校园</h3>
+                <p>金叶飘落，书香满园，收获与成长在这里沉淀</p>
+            </div>
+            <div class="season-card" data-season="winter">
+                <div class="season-icon"><i class="fas fa-snowflake"></i></div>
+                <h3>冬之校园</h3>
+                <p>银装素裹，静谧安宁，思考与期待在这里孕育</p>
+            </div>
+        </div>
+        
+        <div class="exhibition-previews">
+            <div class="exhibition-preview">
+                <div class="preview-icon"><i class="fas fa-landmark"></i></div>
+                <h3>第一展厅 · 岁月留痕</h3>
+                <p>探索校园建筑变迁，体验3D全景漫游，欣赏建筑细节之美</p>
+                <a href="museum-content.html" class="preview-link">探索展厅 <i class="fas fa-arrow-right"></i></a>
+            </div>
+            <div class="exhibition-preview">
+                <div class="preview-icon"><i class="fas fa-users"></i></div>
+                <h3>第二展厅 · 人物长廊</h3>
+                <p>了解历代名师风采，追寻校友足迹，致敬校园幕后英雄</p>
+                <a href="people-gallery.html" class="preview-link">探索展厅 <i class="fas fa-arrow-right"></i></a>
+            </div>
+            <div class="exhibition-preview">
+                <div class="preview-icon"><i class="fas fa-photo-video"></i></div>
+                <h3>第三展厅 · 声影档案馆</h3>
+                <p>浏览珍贵老照片，聆听口述历史，观看历年活动影像</p>
+                <a href="audio-video-archive.html" class="preview-link">探索展厅 <i class="fas fa-arrow-right"></i></a>
+            </div>
+        </div>
+        
+        <div class="enter-museum">
+            <a href="museum-content.html" class="enter-btn">
+                <i class="fas fa-door-open"></i> 进入数字博物馆
+            </a>
+        </div>
+    </section>
+
+    <footer>
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-section">
+                    <h3>关于我们</h3>
+                    <p>"我们的校园记忆"线上数字博物馆致力于保存和展示校园历史文化</p>
+                </div>
+                <div class="footer-section">
+                    <h3>联系我们</h3>
+                    <p>邮箱：campusmemory@example.com</p>
+                    <p>电话：010-12345678</p>
+                </div>
+                <div class="footer-section">
+                    <h3>关注我们</h3>
+                    <p>微信公众号：校园记忆</p>
+                    <p>微博：@我们的校园记忆</p>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                <p>&copy; 2025 我们的校园记忆线上数字博物馆 版权所有</p>
+            </div>
+        </div>
+    </footer>
+
+    <script src="js/main.js"></script>
+    <script>
+        // 季节切换功能
+        document.querySelectorAll('.season-card').forEach(card => {
+            card.addEventListener('click', function() {
+                const season = this.getAttribute('data-season');
+                
+                document.querySelectorAll('.season-card').forEach(c => {
+                    c.classList.remove('active');
+                });
+                
+                this.classList.add('active');
+                
+                const homepage = document.getElementById('homepage');
+                homepage.className = 'homepage ' + season + '-bg';
+            });
+        });
+
+        // 处理背景图片加载失败
+        window.addEventListener('load', function() {
+            const seasons = ['spring', 'summer', 'autumn', 'winter'];
+            seasons.forEach(season => {
+                const img = new Image();
+                img.onerror = function() {
+                    console.warn(`无法加载 ${season} 背景图片`);
+                };
+                img.src = `images/backgrounds/${season}.jpg`;
+            });
+        });
+    </script>
+</body>
+</html>

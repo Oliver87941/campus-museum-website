@@ -1,0 +1,1450 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>第三展厅·声影档案馆 - 我们的校园记忆</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="css/style.css">
+    <style>
+        /* 档案馆分类导航 */
+        .archive-nav {
+            display: flex;
+            justify-content: center;
+            margin-bottom: 50px;
+            background-color: white;
+            border-radius: 50px;
+            padding: 10px;
+            box-shadow: var(--shadow);
+            max-width: 700px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+        .nav-item {
+            padding: 12px 25px;
+            border-radius: 30px;
+            cursor: pointer;
+            transition: all 0.3s;
+            font-weight: 500;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .nav-item.active {
+            background-color: var(--primary-color);
+            color: white;
+        }
+
+        .nav-item:hover:not(.active) {
+            background-color: rgba(74, 111, 165, 0.1);
+        }
+
+        /* 档案馆内容区 */
+        .archive-section {
+            padding: 40px 0;
+            display: none;
+        }
+
+        .archive-section.active {
+            display: block;
+        }
+
+        /* 老照片库样式 */
+        .search-bar {
+            max-width: 500px;
+            margin: 0 auto 40px;
+            position: relative;
+        }
+
+        .search-bar input {
+            width: 100%;
+            padding: 12px 20px;
+            border: 1px solid #ddd;
+            border-radius: 30px;
+            font-size: 1rem;
+            box-shadow: var(--shadow);
+        }
+
+        .search-bar button {
+            position: absolute;
+            right: 5px;
+            top: 5px;
+            background: var(--primary-color);
+            color: white;
+            border: none;
+            border-radius: 30px;
+            padding: 7px 15px;
+            cursor: pointer;
+        }
+
+        .decade-filter {
+            display: flex;
+            justify-content: center;
+            flex-wrap: wrap;
+            gap: 15px;
+            margin-bottom: 40px;
+        }
+
+        .decade-btn {
+            padding: 10px 20px;
+            background: white;
+            border: 2px solid var(--primary-color);
+            border-radius: 30px;
+            cursor: pointer;
+            transition: all 0.3s;
+            font-weight: 500;
+        }
+
+        .decade-btn.active {
+            background: var(--primary-color);
+            color: white;
+        }
+
+        .decade-btn:hover:not(.active) {
+            background: rgba(74, 111, 165, 0.1);
+        }
+
+        .photo-gallery {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+            gap: 25px;
+        }
+
+        .photo-card {
+            background: white;
+            border-radius: 10px;
+            overflow: hidden;
+            box-shadow: var(--shadow);
+            transition: transform 0.3s;
+        }
+
+        .photo-card:hover {
+            transform: translateY(-5px);
+        }
+
+        .photo-img {
+            width: 100%;
+            height: 200px;
+            background-color: #eee;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--primary-color);
+            font-size: 3rem;
+            overflow: hidden;
+            cursor: pointer;
+        }
+
+        .photo-img img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: transform 0.3s;
+        }
+
+        .photo-card:hover .photo-img img {
+            transform: scale(1.05);
+        }
+
+        .photo-content {
+            padding: 15px;
+        }
+
+        .photo-title {
+            font-weight: 600;
+            margin-bottom: 5px;
+            color: var(--dark-color);
+        }
+
+        .photo-year {
+            color: var(--accent-color);
+            font-size: 0.9rem;
+            margin-bottom: 10px;
+        }
+
+        .photo-description {
+            font-size: 0.9rem;
+            color: #666;
+        }
+
+        /* 口述历史库样式 */
+        .audio-library {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
+            gap: 30px;
+        }
+
+        .audio-card {
+            background: white;
+            border-radius: 10px;
+            overflow: hidden;
+            box-shadow: var(--shadow);
+            transition: transform 0.3s;
+        }
+
+        .audio-card:hover {
+            transform: translateY(-5px);
+        }
+
+        .audio-header {
+            padding: 20px;
+            background: var(--primary-color);
+            color: white;
+        }
+
+        .audio-title {
+            font-size: 1.2rem;
+            margin-bottom: 5px;
+        }
+
+        .audio-interviewee {
+            font-size: 0.9rem;
+            opacity: 0.9;
+        }
+
+        .audio-content {
+            padding: 20px;
+        }
+
+        .audio-player {
+            width: 100%;
+            margin-bottom: 15px;
+            border-radius: 8px;
+        }
+
+        .audio-description {
+            margin-bottom: 15px;
+            font-size: 0.95rem;
+        }
+
+        .audio-versions {
+            display: flex;
+            gap: 10px;
+            flex-wrap: wrap;
+        }
+
+        .version-btn {
+            padding: 8px 15px;
+            background: var(--secondary-color);
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 0.9rem;
+            transition: background 0.3s;
+        }
+
+        .version-btn:hover {
+            background: #5aa876;
+        }
+
+        /* 活动影像志样式 */
+        .video-library {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
+            gap: 30px;
+        }
+
+        .video-card {
+            background: white;
+            border-radius: 10px;
+            overflow: hidden;
+            box-shadow: var(--shadow);
+            transition: transform 0.3s;
+        }
+
+        .video-card:hover {
+            transform: translateY(-5px);
+        }
+
+        .video-player {
+            width: 100%;
+            height: 200px;
+            background-color: #333;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 3rem;
+            overflow: hidden;
+            cursor: pointer;
+            position: relative;
+        }
+
+        .video-player img,
+        .video-player video {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: transform 0.3s;
+        }
+
+        .video-player .play-icon {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            background: rgba(0, 0, 0, 0.7);
+            border-radius: 50%;
+            width: 60px;
+            height: 60px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.3s;
+        }
+
+        .video-card:hover .video-player img,
+        .video-card:hover .video-player video {
+            transform: scale(1.05);
+        }
+
+        .video-card:hover .video-player .play-icon {
+            background: rgba(0, 0, 0, 0.9);
+            transform: translate(-50%, -50%) scale(1.1);
+        }
+
+        .video-content {
+            padding: 20px;
+        }
+
+        .video-title {
+            font-size: 1.2rem;
+            margin-bottom: 10px;
+            color: var(--primary-color);
+        }
+
+        .video-year {
+            color: var(--accent-color);
+            font-size: 0.9rem;
+            margin-bottom: 10px;
+        }
+
+        .video-description {
+            font-size: 0.95rem;
+            color: #666;
+        }
+
+        /* 人物志样式 */
+        .figures-section {
+            padding: 40px 0;
+            display: none;
+        }
+
+        .figures-section.active {
+            display: block;
+        }
+
+        .timeline-nav {
+            display: flex;
+            justify-content: center;
+            flex-wrap: wrap;
+            gap: 15px;
+            margin-bottom: 40px;
+        }
+
+        .timeline-btn {
+            padding: 10px 20px;
+            background: white;
+            border: 2px solid var(--primary-color);
+            border-radius: 30px;
+            cursor: pointer;
+            transition: all 0.3s;
+            font-weight: 500;
+        }
+
+        .timeline-btn.active {
+            background: var(--primary-color);
+            color: white;
+        }
+
+        .timeline-btn:hover:not(.active) {
+            background: rgba(74, 111, 165, 0.1);
+        }
+
+        .figures-container {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            gap: 30px;
+        }
+
+        .figure-card {
+            background: white;
+            border-radius: 10px;
+            overflow: hidden;
+            box-shadow: var(--shadow);
+            transition: transform 0.3s;
+            display: none;
+        }
+
+        .figure-card.active {
+            display: block;
+        }
+
+        .figure-card:hover {
+            transform: translateY(-5px);
+        }
+
+        .figure-img {
+            width: 100%;
+            height: 250px;
+            background-color: #eee;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--primary-color);
+            font-size: 3rem;
+            overflow: hidden;
+        }
+
+        .figure-img img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: transform 0.3s;
+        }
+
+        .figure-card:hover .figure-img img {
+            transform: scale(1.05);
+        }
+
+        .figure-content {
+            padding: 20px;
+        }
+
+        .figure-name {
+            font-size: 1.3rem;
+            font-weight: 600;
+            margin-bottom: 5px;
+            color: var(--primary-color);
+        }
+
+        .figure-title {
+            color: var(--accent-color);
+            font-size: 0.9rem;
+            margin-bottom: 10px;
+        }
+
+        .figure-era {
+            background: rgba(74, 111, 165, 0.1);
+            padding: 3px 8px;
+            border-radius: 15px;
+            font-size: 0.8rem;
+            display: inline-block;
+            margin-bottom: 10px;
+            color: var(--primary-color);
+        }
+
+        .figure-description {
+            font-size: 0.95rem;
+            color: #666;
+            margin-bottom: 15px;
+        }
+
+        .figure-achievements {
+            margin-top: 15px;
+            padding-top: 15px;
+            border-top: 1px solid #eee;
+        }
+
+        .achievement-title {
+            font-weight: 600;
+            margin-bottom: 8px;
+            color: var(--dark-color);
+        }
+
+        .achievement-list {
+            list-style-type: none;
+            padding-left: 0;
+        }
+
+        .achievement-list li {
+            margin-bottom: 5px;
+            padding-left: 15px;
+            position: relative;
+            font-size: 0.9rem;
+        }
+
+        .achievement-list li:before {
+            content: "•";
+            color: var(--secondary-color);
+            position: absolute;
+            left: 0;
+        }
+
+        /* 媒体全屏查看器样式 */
+        .media-viewer {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.95);
+            z-index: 2000;
+            display: none;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+        }
+        
+        .media-viewer.active {
+            display: flex;
+        }
+        
+        .media-viewer-header {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 15px 20px;
+            background-color: rgba(0, 0, 0, 0.7);
+            color: white;
+            z-index: 10;
+        }
+        
+        .media-viewer-controls {
+            display: flex;
+            gap: 15px;
+        }
+        
+        .media-viewer-controls button {
+            background: none;
+            border: none;
+            color: white;
+            font-size: 1.5rem;
+            cursor: pointer;
+            transition: color 0.3s;
+        }
+        
+        .media-viewer-controls button:hover {
+            color: var(--accent-color);
+        }
+        
+        .media-viewer-body {
+            width: 90%;
+            height: 90%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            position: relative;
+        }
+        
+        .media-viewer-img {
+            max-width: 100%;
+            max-height: 100%;
+            object-fit: contain;
+            transition: transform 0.3s;
+        }
+        
+        .media-viewer-video {
+            width: 100%;
+            height: 100%;
+            max-width: 100%;
+            max-height: 100%;
+            object-fit: contain;
+        }
+        
+        .media-viewer-footer {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            padding: 10px 20px;
+            background-color: rgba(0, 0, 0, 0.7);
+            color: white;
+            text-align: center;
+            font-size: 0.9rem;
+        }
+
+        @media (max-width: 768px) {
+            .archive-nav {
+                flex-direction: column;
+                border-radius: 15px;
+                max-width: 300px;
+            }
+            
+            .nav-item {
+                border-radius: 10px;
+                margin-bottom: 5px;
+            }
+            
+            .audio-library, .video-library {
+                grid-template-columns: 1fr;
+            }
+            
+            .figures-container {
+                grid-template-columns: 1fr;
+            }
+            
+            .timeline-nav {
+                flex-direction: column;
+                align-items: center;
+            }
+            
+            .timeline-btn {
+                width: 80%;
+            }
+            
+            .audio-versions {
+                flex-direction: column;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- 浮动元素 -->
+    <div class="floating-elements">
+        <div class="floating-element"><i class="fas fa-photo-video"></i></div>
+        <div class="floating-element"><i class="fas fa-microphone-alt"></i></div>
+        <div class="floating-element"><i class="fas fa-film"></i></div>
+        <div class="floating-element"><i class="fas fa-history"></i></div>
+        <div class="floating-element"><i class="fas fa-music"></i></div>
+    </div>
+
+    <!-- 导航栏 -->
+    <nav class="navbar">
+        <div class="container nav-container">
+            <div class="logo">
+                <h1>我们的校园记忆</h1>
+            </div>
+            <div class="nav-links">
+                <a href="index.html"><i class="fas fa-home"></i> 返回首页</a>
+                <a href="#photos"><i class="fas fa-images"></i> 老照片库</a>
+                <a href="#audio"><i class="fas fa-microphone-alt"></i> 口述历史</a>
+                <a href="#videos"><i class="fas fa-film"></i> 活动影像</a>
+                <a href="#figures"><i class="fas fa-user-friends"></i> 人物志</a>
+            </div>
+        </div>
+    </nav>
+
+    <!-- 页面头部 -->
+    <header class="page-header">
+        <div class="container">
+            <h1>第三展厅 · 声影档案馆</h1>
+            <p>浏览珍贵老照片，聆听口述历史，观看历年活动影像，了解校园重要人物</p>
+        </div>
+    </header>
+
+    <!-- 展厅导航 -->
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            if (typeof initHallNavigation === 'function') {
+                initHallNavigation('archive');
+            }
+        });
+    </script>
+
+    <!-- 档案馆分类导航 -->
+    <div class="container">
+        <div class="archive-nav">
+            <div class="nav-item active" data-target="photos">
+                <i class="fas fa-images"></i> 老照片库
+            </div>
+            <div class="nav-item" data-target="audio">
+                <i class="fas fa-microphone-alt"></i> 口述历史
+            </div>
+            <div class="nav-item" data-target="videos">
+                <i class="fas fa-film"></i> 活动影像志
+            </div>
+            <div class="nav-item" data-target="figures">
+                <i class="fas fa-user-friends"></i> 人物志
+            </div>
+        </div>
+    </div>
+
+    <!-- 老照片库部分 -->
+    <section id="photos" class="archive-section active">
+        <div class="container">
+            <h2 class="section-title">老照片库</h2>
+            <p style="text-align: center; margin-bottom: 40px; max-width: 800px; margin-left: auto; margin-right: auto;">
+                按年代分类的可搜索数字照片库，记录校园珍贵历史瞬间
+            </p>
+            
+            <!-- 搜索栏 -->
+            <div class="search-bar">
+                <input type="text" placeholder="搜索照片关键词..." id="photoSearch">
+                <button onclick="searchPhotos()"><i class="fas fa-search"></i> 搜索</button>
+            </div>
+            
+            <!-- 年代筛选 -->
+            <div class="decade-filter">
+                <div class="decade-btn active" data-year="all">全部</div>
+                <div class="decade-btn" data-year="1900s">建校初期</div>
+                <div class="decade-btn" data-year="1950s">1950年代</div>
+                <div class="decade-btn" data-year="1960s">1960年代</div>
+                <div class="decade-btn" data-year="1970s">1970年代</div>
+                <div class="decade-btn" data-year="1980s">1980年代</div>
+                <div class="decade-btn" data-year="1990s">1990年代</div>
+                <div class="decade-btn" data-year="2000s">2000年代</div>
+            </div>
+            
+            <!-- 照片展示 -->
+            <div class="photo-gallery">
+                <!-- 建校初期照片 -->
+                <div class="photo-card" data-year="1900s">
+                    <div class="photo-img">
+                        <img src="images/museum/凤山书院2_20251008195744.jpg" alt="凤山书院原貌">
+                    </div>
+                    <div class="photo-content">
+                        <div class="photo-title">凤山书院原貌</div>
+                        <div class="photo-year">1905年</div>
+                        <div class="photo-description">凤山书院改建为学堂初期的珍贵影像，记录了我校最早的建筑风貌。</div>
+                    </div>
+                </div>
+                
+                <!-- 1950年代照片 -->
+                <div class="photo-card" data-year="1950s">
+                    <div class="photo-img">
+                        <img src="images/museum/12.1950年”六一“儿童节活动 (1).jpg" alt="1950年六一儿童节活动">
+                    </div>
+                    <div class="photo-content">
+                        <div class="photo-title">1950年六一儿童节活动</div>
+                        <div class="photo-year">1950年</div>
+                        <div class="photo-description">建国后第一个六一儿童节，学生们在校园内举行庆祝活动。</div>
+                    </div>
+                </div>
+                
+                <div class="photo-card" data-year="1950s">
+                    <div class="photo-img">
+                        <img src="images/people/4.1957年全校女教师合影.jpg" alt="1957年全校女教师合影">
+                    </div>
+                    <div class="photo-content">
+                        <div class="photo-title">1957年全校女教师合影</div>
+                        <div class="photo-year">1957年</div>
+                        <div class="photo-description">学校早期女教师团队合影，展现了当时教师队伍的风采。</div>
+                    </div>
+                </div>
+                
+                <!-- 1960年代照片 -->
+                <div class="photo-card" data-year="1960s">
+                    <div class="photo-img">
+                        <img src="images/people/14.1962年江苏省人民广播电台录播了我校张如娟老师的教学实况.jpg" alt="1962年教学实况录播">
+                    </div>
+                    <div class="photo-content">
+                        <div class="photo-title">1962年教学实况录播</div>
+                        <div class="photo-year">1962年</div>
+                        <div class="photo-description">江苏省人民广播电台录播张如娟老师的教学实况。</div>
+                    </div>
+                </div>
+                
+                <!-- 1970年代照片 -->
+                <div class="photo-card" data-year="1970s">
+                    <div class="photo-img">
+                        <img src="images/people/8.1975年教师合影.jpg" alt="1975年教师合影">
+                    </div>
+                    <div class="photo-content">
+                        <div class="photo-title">1975年教师合影</div>
+                        <div class="photo-year">1975年</div>
+                        <div class="photo-description">文革后期教师团队合影，记录特殊历史时期的校园风貌。</div>
+                    </div>
+                </div>
+                
+                <!-- 1980年代照片 -->
+                <div class="photo-card" data-year="1980s">
+                    <div class="photo-img">
+                        <img src="images/museum/6.学校建校80周年庆祝大会场景.jpg" alt="学校建校80周年庆祝大会">
+                    </div>
+                    <div class="photo-content">
+                        <div class="photo-title">学校建校80周年庆祝大会</div>
+                        <div class="photo-year">1987年</div>
+                        <div class="photo-description">学校建校80周年庆典，校友返校共庆盛事。</div>
+                    </div>
+                </div>
+                
+                <div class="photo-card" data-year="1980s">
+                    <div class="photo-img">
+                        <img src="images/museum/1998.png" alt="1988年新教学楼落成">
+                    </div>
+                    <div class="photo-content">
+                        <div class="photo-title">1988年新教学楼落成</div>
+                        <div class="photo-year">1988年</div>
+                        <div class="photo-description">现代化教学楼投入使用，改善教学环境。</div>
+                    </div>
+                </div>
+                
+                <!-- 1990年代照片 -->
+                <div class="photo-card" data-year="1990s">
+                    <div class="photo-img">
+                        <img src="images/museum/8.卢立，1995届校友 国际奥林匹克生物竞赛得住，毕业于北京大学，德国海德堡大学博士，图为卢立与我校部分老师合影.jpg" alt="1995年校园文化艺术节">
+                    </div>
+                    <div class="photo-content">
+                        <div class="photo-title">1995年校园文化艺术节</div>
+                        <div class="photo-year">1995年</div>
+                        <div class="photo-description">首届校园文化艺术节，展示学生多元才艺。</div>
+                    </div>
+                </div>
+                
+                <!-- 2000年代照片 -->
+                <div class="photo-card" data-year="2000s">
+                    <div class="photo-img">
+                        <img src="images/museum/7.少年宫落成典礼.jpg" alt="少年宫落成典礼">
+                    </div>
+                    <div class="photo-content">
+                        <div class="photo-title">少年宫落成典礼</div>
+                        <div class="photo-year">2000年</div>
+                        <div class="photo-description">海安县少年宫落成典礼，丰富学生课外活动空间。</div>
+                    </div>
+                </div>
+                
+                <div class="photo-card" data-year="2000s">
+                    <div class="photo-img">
+                        <img src="images/museum/100周年全体教职员工合影.jpg" alt="学校100周年校庆盛典">
+                    </div>
+                    <div class="photo-content">
+                        <div class="photo-title">学校100周年校庆盛典</div>
+                        <div class="photo-year">2007年</div>
+                        <div class="photo-description">学校建校100周年庆典，校友云集共庆百年华诞。</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- 口述历史库部分 -->
+    <section id="audio" class="archive-section">
+        <div class="container">
+            <h2 class="section-title">口述历史库</h2>
+            <p style="text-align: center; margin-bottom: 40px; max-width: 800px; margin-left: auto; margin-right: auto;">
+                所有采访音频的完整版与精华版在线收听，聆听校园历史的亲历者讲述
+            </p>
+            
+            <div class="audio-library">
+                <!-- 音频卡片 -->
+                <div class="audio-card">
+                    <div class="audio-header">
+                        <div class="audio-title">建校初期的记忆</div>
+                        <div class="audio-interviewee">受访者：郁子贞老先生（凤山高小前校长）</div>
+                    </div>
+                    <div class="audio-content">
+                        <audio class="audio-player" controls>
+                            <source src="audio/yu-zizhen-full.mp3" type="audio/mpeg">
+                            您的浏览器不支持音频播放。
+                        </audio>
+                        <div class="audio-description">
+                            郁子贞老先生回忆凤山高小时期的校园风貌、教学情况和学生生活，是研究学校早期历史的重要口述资料。
+                        </div>
+                        <div class="audio-versions">
+                            <button class="version-btn" onclick="playAudioVersion('yu-zizhen-full.mp3')">完整版 (45分钟)</button>
+                            <button class="version-btn" onclick="playAudioVersion('yu-zizhen-short.mp3')">精华版 (15分钟)</button>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="audio-card">
+                    <div class="audio-header">
+                        <div class="audio-title">文革时期的校园</div>
+                        <div class="audio-interviewee">受访者：张戢光（1965-1974年校长）</div>
+                    </div>
+                    <div class="audio-content">
+                        <audio class="audio-player" controls>
+                            <source src="audio/zhang-jiguang-full.mp3" type="audio/mpeg">
+                            您的浏览器不支持音频播放。
+                        </audio>
+                        <div class="audio-description">
+                            张戢光校长回忆文革期间学校更名为"换新天小学"和"东风小学"的特殊时期，以及如何在困难条件下坚持办学。
+                        </div>
+                        <div class="audio-versions">
+                            <button class="version-btn" onclick="playAudioVersion('zhang-jiguang-full.mp3')">完整版 (38分钟)</button>
+                            <button class="version-btn" onclick="playAudioVersion('zhang-jiguang-short.mp3')">精华版 (12分钟)</button>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="audio-card">
+                    <div class="audio-header">
+                        <div class="audio-title">改革开放与学校发展</div>
+                        <div class="audio-interviewee">受访者：丁修元（1982-1990年校长）</div>
+                    </div>
+                    <div class="audio-content">
+                        <audio class="audio-player" controls>
+                            <source src="audio/ding-xiuyuan-full.mp3" type="audio/mpeg">
+                            您的浏览器不支持音频播放。
+                        </audio>
+                        <div class="audio-description">
+                            丁修元校长讲述改革开放初期学校的现代化建设，包括引进计算机教室、修建标准运动场等重要举措。
+                        </div>
+                        <div class="audio-versions">
+                            <button class="version-btn" onclick="playAudioVersion('ding-xiuyuan-full.mp3')">完整版 (52分钟)</button>
+                            <button class="version-btn" onclick="playAudioVersion('ding-xiuyuan-short.mp3')">精华版 (18分钟)</button>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="audio-card">
+                    <div class="audio-header">
+                        <div class="audio-title">从教四十年的感悟</div>
+                        <div class="audio-interviewee">受访者：秦瑜（全国文教先进个人）</div>
+                    </div>
+                    <div class="audio-content">
+                        <audio class="audio-player" controls>
+                            <source src="audio/qin-yu-full.mp3" type="audio/mpeg">
+                            您的浏览器不支持音频播放。
+                        </audio>
+                        <div class="audio-description">
+                            全国文教先进个人秦瑜老师分享从教四十年的心得体会，讲述教育理念的变化和与学生之间的感人故事。
+                        </div>
+                        <div class="audio-versions">
+                            <button class="version-btn" onclick="playAudioVersion('qin-yu-full.mp3')">完整版 (48分钟)</button>
+                            <button class="version-btn" onclick="playAudioVersion('qin-yu-short.mp3')">精华版 (16分钟)</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- 活动影像志部分 -->
+    <section id="videos" class="archive-section">
+        <div class="container">
+            <h2 class="section-title">活动影像志</h2>
+            <p style="text-align: center; margin-bottom: 40px; max-width: 800px; margin-left: auto; margin-right: auto;">
+                汇集历年重要活动的珍贵视频资料，重现校园历史精彩瞬间
+            </p>
+            
+            <div class="video-library">
+                <!-- 视频卡片 -->
+                <div class="video-card">
+                    <div class="video-player" onclick="playVideo('videos/100th-anniversary.mp4', '学校100周年校庆盛典')">
+                        <img src="images/videos/100th-anniversary-thumb.jpg" alt="学校100周年校庆盛典">
+                        <div class="play-icon">
+                            <i class="fas fa-play"></i>
+                        </div>
+                    </div>
+                    <div class="video-content">
+                        <div class="video-title">学校100周年校庆盛典</div>
+                        <div class="video-year">2007年</div>
+                        <div class="video-description">学校建校100周年庆典活动完整记录，包括庆典大会、文艺演出和校友联谊等活动。</div>
+                    </div>
+                </div>
+                
+                <div class="video-card">
+                    <div class="video-player" onclick="playVideo('videos/1998-relocation.mp4', '1998年学校迁址仪式')">
+                        <img src="images/videos/1998-relocation-thumb.jpg" alt="1998年学校迁址仪式">
+                        <div class="play-icon">
+                            <i class="fas fa-play"></i>
+                        </div>
+                    </div>
+                    <div class="video-content">
+                        <div class="video-title">1998年学校迁址仪式</div>
+                        <div class="video-year">1998年</div>
+                        <div class="video-description">学校从新华东路旧址迁至中坝南路新校址的搬迁仪式和庆祝活动记录。</div>
+                    </div>
+                </div>
+                
+                <div class="video-card">
+                    <div class="video-player" onclick="playVideo('videos/2010-restoration.mp4', '2010年恢复公办体制庆典')">
+                        <img src="images/videos/2010-restoration-thumb.jpg" alt="2010年恢复公办体制庆典">
+                        <div class="play-icon">
+                            <i class="fas fa-play"></i>
+                        </div>
+                    </div>
+                    <div class="video-content">
+                        <div class="video-title">2010年恢复公办体制庆典</div>
+                        <div class="video-year">2010年</div>
+                        <div class="video-description">学校从海陵小学恢复为海安县实验小学的庆祝活动，标志着学校发展新阶段的开始。</div>
+                    </div>
+                </div>
+                
+                <div class="video-card">
+                    <div class="video-player" onclick="playVideo('videos/2023-fengshan-campus.mp4', '2023年凤山校区启用仪式')">
+                        <img src="images/videos/2023-fengshan-thumb.jpg" alt="2023年凤山校区启用仪式">
+                        <div class="play-icon">
+                            <i class="fas fa-play"></i>
+                        </div>
+                    </div>
+                    <div class="video-content">
+                        <div class="video-title">2023年凤山校区启用仪式</div>
+                        <div class="video-year">2023年</div>
+                        <div class="video-description">海安市实验小学教育集团凤山校区正式启用的庆典活动，标志着学校集团化发展进入新阶段。</div>
+                    </div>
+                </div>
+                
+                <div class="video-card">
+                    <div class="video-player" onclick="playVideo('videos/children-day-highlights.mp4', '历年六一儿童节汇演精选')">
+                        <img src="images/videos/children-day-thumb.jpg" alt="历年六一儿童节汇演精选">
+                        <div class="play-icon">
+                            <i class="fas fa-play"></i>
+                        </div>
+                    </div>
+                    <div class="video-content">
+                        <div class="video-title">历年六一儿童节汇演精选</div>
+                        <div class="video-year">1980-2020年</div>
+                        <div class="video-description">精选40年来学校六一儿童节文艺汇演的精彩片段，展现不同时代学生的风采。</div>
+                    </div>
+                </div>
+                
+                <div class="video-card">
+                    <div class="video-player" onclick="playVideo('videos/project-learning-showcase.mp4', '项目学习成果展示会')">
+                        <img src="images/videos/project-learning-thumb.jpg" alt="项目学习成果展示会">
+                        <div class="play-icon">
+                            <i class="fas fa-play"></i>
+                        </div>
+                    </div>
+                    <div class="video-content">
+                        <div class="video-title">项目学习成果展示会</div>
+                        <div class="video-year">2015-2023年</div>
+                        <div class="video-description">学校特色项目学习课程的成果展示会集锦，展现学生创新能力和综合素质。</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- 人物志部分 -->
+    <section id="figures" class="archive-section figures-section">
+        <div class="container">
+            <h2 class="section-title">人物志</h2>
+            <p style="text-align: center; margin-bottom: 40px; max-width: 800px; margin-left: auto; margin-right: auto;">
+                了解学校发展历程中的重要人物，他们为学校的发展做出了卓越贡献
+            </p>
+            
+            <!-- 年代导航 -->
+            <div class="timeline-nav">
+                <div class="timeline-btn active" data-era="all">全部</div>
+                <div class="timeline-btn" data-era="1900s">建校初期</div>
+                <div class="timeline-btn" data-era="1950s">1950年代</div>
+                <div class="timeline-btn" data-era="1960s">1960年代</div>
+                <div class="timeline-btn" data-era="1980s">1980年代</div>
+                <div class="timeline-btn" data-era="1990s">1990年代</div>
+                <div class="timeline-btn" data-era="2000s">2000年代</div>
+            </div>
+            
+            <!-- 人物卡片容器 -->
+            <div class="figures-container">
+                <!-- 建校初期人物 -->
+                <div class="figure-card active" data-era="1900s">
+                    <div class="figure-img">
+                        <img src="images/people/8.1975年教师合影.jpg" alt="郁子贞">
+                    </div>
+                    <div class="figure-content">
+                        <div class="figure-name">郁子贞</div>
+                        <div class="figure-title">凤山高小前校长</div>
+                        <div class="figure-era">建校初期</div>
+                        <div class="figure-description">
+                            郁子贞先生是我校建校初期的关键人物，作为凤山高小的前校长，他奠定了学校的教育基础和文化传统。
+                        </div>
+                        <div class="figure-achievements">
+                            <div class="achievement-title">主要贡献</div>
+                            <ul class="achievement-list">
+                                <li>主持凤山书院改建为学堂的工作</li>
+                                <li>建立学校早期教育体系</li>
+                                <li>培养首批学生成为社会栋梁</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- 1950年代人物 -->
+                <div class="figure-card active" data-era="1950s">
+                    <div class="figure-img">
+                        <img src="images/people/4.1957年全校女教师合影.jpg" alt="张如娟">
+                    </div>
+                    <div class="figure-content">
+                        <div class="figure-name">张如娟</div>
+                        <div class="figure-title">优秀教师</div>
+                        <div class="figure-era">1950年代</div>
+                        <div class="figure-description">
+                            张如娟老师是1950年代我校的优秀教师代表，她的教学实况曾被江苏省人民广播电台录播。
+                        </div>
+                        <div class="figure-achievements">
+                            <div class="achievement-title">主要贡献</div>
+                            <ul class="achievement-list">
+                                <li>创新教学方法，提升教学质量</li>
+                                <li>1962年教学实况被省广播电台录播</li>
+                                <li>培养多名优秀学生</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- 1960年代人物 -->
+                <div class="figure-card active" data-era="1960s">
+                    <div class="figure-img">
+                        <img src="images/people/校长4张戢光.jpg" alt="张戢光">
+                    </div>
+                    <div class="figure-content">
+                        <div class="figure-name">张戢光</div>
+                        <div class="figure-title">1965-1974年校长</div>
+                        <div class="figure-era">1960年代</div>
+                        <div class="figure-description">
+                            张戢光校长在特殊历史时期领导学校，在困难条件下坚持办学，为学校后续发展奠定了基础。
+                        </div>
+                        <div class="figure-achievements">
+                            <div class="achievement-title">主要贡献</div>
+                            <ul class="achievement-list">
+                                <li>在文革期间坚持办学</li>
+                                <li>保护学校基础设施</li>
+                                <li>维持基本教学秩序</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- 1980年代人物 -->
+                <div class="figure-card active" data-era="1980s">
+                    <div class="figure-img">
+                        <img src="images/people/校长7丁修元.jpg" alt="丁修元">
+                    </div>
+                    <div class="figure-content">
+                        <div class="figure-name">丁修元</div>
+                        <div class="figure-title">1982-1990年校长</div>
+                        <div class="figure-era">1980年代</div>
+                        <div class="figure-description">
+                            丁修元校长在改革开放初期推动学校现代化建设，引进先进教学设备，提升教育质量。
+                        </div>
+                        <div class="figure-achievements">
+                            <div class="achievement-title">主要贡献</div>
+                            <ul class="achievement-list">
+                                <li>引进计算机教室</li>
+                                <li>修建标准运动场</li>
+                                <li>推动课程改革</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- 1990年代人物 -->
+                <div class="figure-card active" data-era="1990s">
+                    <div class="figure-img">
+                        <img src="images/people/校长8金沙.jpg" alt="金沙">
+                    </div>
+                    <div class="figure-content">
+                        <div class="figure-name">金沙</div>
+                        <div class="figure-title">1990-2003年校长</div>
+                        <div class="figure-era">1990年代</div>
+                        <div class="figure-description">
+                            金沙校长在任期间推动学校多元化发展，创建海安县少年宫，丰富学生课外活动。
+                        </div>
+                        <div class="figure-achievements">
+                            <div class="achievement-title">主要贡献</div>
+                            <ul class="achievement-list">
+                                <li>创建海安县少年宫</li>
+                                <li>推动素质教育改革</li>
+                                <li>扩大校园规模</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- 2000年代人物 -->
+                <div class="figure-card active" data-era="2000s">
+                    <div class="figure-img">
+                        <img src="images/people/教师照片-2.jpg" alt="秦瑜">
+                    </div>
+                    <div class="figure-content">
+                        <div class="figure-name">秦瑜</div>
+                        <div class="figure-title">全国文教先进个人</div>
+                        <div class="figure-era">2000年代</div>
+                        <div class="figure-description">
+                            秦瑜老师从教四十年，荣获全国文教先进个人称号，以其独特的教学方法和教育理念影响了一代又一代学生。
+                        </div>
+                        <div class="figure-achievements">
+                            <div class="achievement-title">主要贡献</div>
+                            <ul class="achievement-list">
+                                <li>荣获全国文教先进个人称号</li>
+                                <li>创新语文教学方法</li>
+                                <li>指导多名学生在各类竞赛中获奖</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- 页脚 -->
+    <footer>
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-section">
+                    <h3>关于我们</h3>
+                    <p>"我们的校园记忆"线上数字博物馆致力于保存和展示校园历史文化</p>
+                </div>
+                <div class="footer-section">
+                    <h3>联系我们</h3>
+                    <p>邮箱：campusmemory@example.com</p>
+                    <p>电话：010-12345678</p>
+                </div>
+                <div class="footer-section">
+                    <h3>关注我们</h3>
+                    <p>微信公众号：校园记忆</p>
+                    <p>微博：@我们的校园记忆</p>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                <p>&copy; 2025 我们的校园记忆线上数字博物馆 版权所有</p>
+            </div>
+        </div>
+    </footer>
+
+    <!-- 媒体全屏查看器 -->
+    <div class="media-viewer" id="mediaViewer">
+        <div class="media-viewer-header">
+            <h3 id="mediaViewerTitle">媒体查看</h3>
+            <div class="media-viewer-controls">
+                <button id="zoomInBtn"><i class="fas fa-search-plus"></i></button>
+                <button id="zoomOutBtn"><i class="fas fa-search-minus"></i></button>
+                <button id="resetZoomBtn"><i class="fas fa-sync-alt"></i></button>
+                <button id="closeMediaViewer"><i class="fas fa-times"></i></button>
+            </div>
+        </div>
+        <div class="media-viewer-body">
+            <img id="fullscreenImage" class="media-viewer-img" src="" alt="全屏图片" style="display: none;">
+            <video id="fullscreenVideo" class="media-viewer-video" controls style="display: none;"></video>
+        </div>
+        <div class="media-viewer-footer">
+            <p id="mediaViewerCaption">媒体描述</p>
+        </div>
+    </div>
+
+    <script src="js/main.js"></script>
+    <script>
+        // 导航切换功能
+        document.querySelectorAll('.nav-item').forEach(item => {
+            item.addEventListener('click', function() {
+                // 移除所有导航项的active类
+                document.querySelectorAll('.nav-item').forEach(nav => {
+                    nav.classList.remove('active');
+                });
+                
+                // 为当前导航项添加active类
+                this.classList.add('active');
+                
+                // 获取目标区域
+                const target = this.getAttribute('data-target');
+                
+                // 隐藏所有区域
+                document.querySelectorAll('.archive-section').forEach(section => {
+                    section.classList.remove('active');
+                });
+                
+                // 显示目标区域
+                document.getElementById(target).classList.add('active');
+            });
+        });
+        
+        // 老照片年代筛选功能
+        document.querySelectorAll('.decade-btn').forEach(btn => {
+            btn.addEventListener('click', function() {
+                // 移除所有年代按钮的active类
+                document.querySelectorAll('.decade-btn').forEach(b => {
+                    b.classList.remove('active');
+                });
+                
+                // 为当前按钮添加active类
+                this.classList.add('active');
+                
+                // 获取选中的年代
+                const selectedYear = this.getAttribute('data-year');
+                
+                // 筛选照片卡片
+                document.querySelectorAll('.photo-card').forEach(card => {
+                    if (selectedYear === 'all' || card.getAttribute('data-year') === selectedYear) {
+                        card.style.display = 'block';
+                    } else {
+                        card.style.display = 'none';
+                    }
+                });
+            });
+        });
+        
+        // 照片搜索功能
+        function searchPhotos() {
+            const searchTerm = document.getElementById('photoSearch').value.toLowerCase();
+            const photoCards = document.querySelectorAll('.photo-card');
+            
+            photoCards.forEach(card => {
+                const title = card.querySelector('.photo-title').textContent.toLowerCase();
+                const description = card.querySelector('.photo-description').textContent.toLowerCase();
+                
+                if (title.includes(searchTerm) || description.includes(searchTerm)) {
+                    card.style.display = 'block';
+                } else {
+                    card.style.display = 'none';
+                }
+            });
+        }
+        
+        // 音频版本切换功能
+        function playAudioVersion(audioFile) {
+            alert(`正在加载音频: ${audioFile}\n注：实际应用中这里会切换音频源`);
+        }
+        
+        // 视频播放功能
+        function playVideo(videoSrc, title) {
+            const mediaViewer = document.getElementById('mediaViewer');
+            const fullscreenVideo = document.getElementById('fullscreenVideo');
+            const mediaViewerTitle = document.getElementById('mediaViewerTitle');
+            const mediaViewerCaption = document.getElementById('mediaViewerCaption');
+            
+            fullscreenVideo.src = videoSrc;
+            fullscreenVideo.style.display = 'block';
+            document.getElementById('fullscreenImage').style.display = 'none';
+            mediaViewerTitle.textContent = title;
+            mediaViewerCaption.textContent = title;
+            
+            mediaViewer.classList.add('active');
+            fullscreenVideo.play();
+        }
+        
+        // 人物志年代筛选功能
+        document.querySelectorAll('.timeline-btn').forEach(btn => {
+            btn.addEventListener('click', function() {
+                // 移除所有年代按钮的active类
+                document.querySelectorAll('.timeline-btn').forEach(b => {
+                    b.classList.remove('active');
+                });
+                
+                // 为当前按钮添加active类
+                this.classList.add('active');
+                
+                // 获取选中的年代
+                const selectedEra = this.getAttribute('data-era');
+                
+                // 筛选人物卡片
+                document.querySelectorAll('.figure-card').forEach(card => {
+                    if (selectedEra === 'all' || card.getAttribute('data-era') === selectedEra) {
+                        card.classList.add('active');
+                    } else {
+                        card.classList.remove('active');
+                    }
+                });
+            });
+        });
+
+        // 媒体查看器功能
+        const mediaViewer = document.getElementById('mediaViewer');
+        const fullscreenImage = document.getElementById('fullscreenImage');
+        const fullscreenVideo = document.getElementById('fullscreenVideo');
+        const closeMediaViewer = document.getElementById('closeMediaViewer');
+        const zoomInBtn = document.getElementById('zoomInBtn');
+        const zoomOutBtn = document.getElementById('zoomOutBtn');
+        const resetZoomBtn = document.getElementById('resetZoomBtn');
+        const mediaViewerTitle = document.getElementById('mediaViewerTitle');
+        const mediaViewerCaption = document.getElementById('mediaViewerCaption');
+        
+        let currentScale = 1;
+        const scaleStep = 0.2;
+        const maxScale = 3;
+        const minScale = 0.5;
+        
+        // 为所有照片添加点击事件
+        document.querySelectorAll('.photo-img img').forEach(img => {
+            img.addEventListener('click', function() {
+                // 获取图片源和alt文本
+                const imgSrc = this.src;
+                const imgAlt = this.alt;
+                
+                // 获取标题和描述
+                const card = this.closest('.photo-card');
+                const title = card.querySelector('.photo-title').textContent;
+                const year = card.querySelector('.photo-year').textContent;
+                const description = card.querySelector('.photo-description').textContent;
+                
+                // 设置全屏查看器的内容
+                fullscreenImage.src = imgSrc;
+                fullscreenImage.style.display = 'block';
+                fullscreenVideo.style.display = 'none';
+                mediaViewerTitle.textContent = title;
+                mediaViewerCaption.textContent = `${year} - ${description}`;
+                
+                // 重置缩放
+                currentScale = 1;
+                fullscreenImage.style.transform = `scale(${currentScale})`;
+                
+                // 显示全屏查看器
+                mediaViewer.classList.add('active');
+            });
+        });
+        
+        // 关闭媒体查看器
+        closeMediaViewer.addEventListener('click', function() {
+            mediaViewer.classList.remove('active');
+            fullscreenVideo.pause();
+        });
+        
+        // 点击背景关闭
+        mediaViewer.addEventListener('click', function(e) {
+            if (e.target === mediaViewer) {
+                mediaViewer.classList.remove('active');
+                fullscreenVideo.pause();
+            }
+        });
+        
+        // 放大功能（仅对图片有效）
+        zoomInBtn.addEventListener('click', function(e) {
+            e.stopPropagation();
+            if (currentScale < maxScale && fullscreenImage.style.display === 'block') {
+                currentScale += scaleStep;
+                fullscreenImage.style.transform = `scale(${currentScale})`;
+            }
+        });
+        
+        // 缩小功能（仅对图片有效）
+        zoomOutBtn.addEventListener('click', function(e) {
+            e.stopPropagation();
+            if (currentScale > minScale && fullscreenImage.style.display === 'block') {
+                currentScale -= scaleStep;
+                fullscreenImage.style.transform = `scale(${currentScale})`;
+            }
+        });
+        
+        // 重置缩放（仅对图片有效）
+        resetZoomBtn.addEventListener('click', function(e) {
+            e.stopPropagation();
+            if (fullscreenImage.style.display === 'block') {
+                currentScale = 1;
+                fullscreenImage.style.transform = `scale(${currentScale})`;
+            }
+        });
+        
+        // 键盘快捷键支持
+        document.addEventListener('keydown', function(e) {
+            if (mediaViewer.classList.contains('active')) {
+                switch(e.key) {
+                    case 'Escape':
+                        mediaViewer.classList.remove('active');
+                        fullscreenVideo.pause();
+                        break;
+                    case '+':
+                    case '=':
+                        if (currentScale < maxScale && fullscreenImage.style.display === 'block') {
+                            currentScale += scaleStep;
+                            fullscreenImage.style.transform = `scale(${currentScale})`;
+                        }
+                        e.preventDefault();
+                        break;
+                    case '-':
+                        if (currentScale > minScale && fullscreenImage.style.display === 'block') {
+                            currentScale -= scaleStep;
+                            fullscreenImage.style.transform = `scale(${currentScale})`;
+                        }
+                        e.preventDefault();
+                        break;
+                    case '0':
+                        if (fullscreenImage.style.display === 'block') {
+                            currentScale = 1;
+                            fullscreenImage.style.transform = `scale(${currentScale})`;
+                        }
+                        break;
+                    case ' ':
+                        if (fullscreenVideo.style.display === 'block') {
+                            if (fullscreenVideo.paused) {
+                                fullscreenVideo.play();
+                            } else {
+                                fullscreenVideo.pause();
+                            }
+                            e.preventDefault();
+                        }
+                        break;
+                }
+            }
+        });
+    </script>
+</body>
+</html>

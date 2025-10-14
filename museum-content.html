@@ -1,0 +1,955 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>第一展厅·岁月留痕 - 我们的校园记忆</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/pannellum@2.5.6/build/pannellum.css">
+    <link rel="stylesheet" href="css/style.css">
+    <style>
+        /* 时间轴样式 */
+        .timeline-section {
+            padding: 60px 0;
+            background-color: #f5f7fa;
+        }
+
+        .timeline {
+            position: relative;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .timeline::after {
+            content: '';
+            position: absolute;
+            width: 6px;
+            background-color: var(--primary-color);
+            top: 0;
+            bottom: 0;
+            left: 50%;
+            margin-left: -3px;
+        }
+
+        .timeline-item {
+            padding: 10px 40px;
+            position: relative;
+            width: 50%;
+            box-sizing: border-box;
+            opacity: 0;
+            transform: translateY(20px);
+            transition: opacity 0.5s, transform 0.5s;
+        }
+
+        .timeline-item.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        .timeline-item::after {
+            content: '';
+            position: absolute;
+            width: 25px;
+            height: 25px;
+            background-color: white;
+            border: 4px solid var(--primary-color);
+            border-radius: 50%;
+            top: 15px;
+            z-index: 1;
+        }
+
+        .left {
+            left: 0;
+        }
+
+        .left::after {
+            right: -12px;
+        }
+
+        .right {
+            left: 50%;
+        }
+
+        .right::after {
+            left: -12px;
+        }
+
+        .timeline-content {
+            padding: 20px 30px;
+            background-color: white;
+            border-radius: 10px;
+            box-shadow: var(--shadow);
+        }
+
+        .timeline-content h3 {
+            color: var(--primary-color);
+            margin-bottom: 10px;
+        }
+
+        .timeline-img {
+            width: 100%;
+            border-radius: 8px;
+            margin-bottom: 15px;
+            background-color: #f0f0f0;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #666;
+            font-style: italic;
+            min-height: 200px;
+            overflow: hidden;
+            cursor: pointer;
+        }
+
+        .timeline-img img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: transform 0.3s;
+        }
+
+        .timeline-img:hover img {
+            transform: scale(1.05);
+        }
+
+        /* 全景漫游部分 */
+        .panorama-section {
+            padding: 60px 0;
+        }
+
+        .panorama-container {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 30px;
+            margin-bottom: 40px;
+        }
+
+        .panorama-card {
+            background-color: white;
+            border-radius: 10px;
+            overflow: hidden;
+            box-shadow: var(--shadow);
+            transition: transform 0.3s;
+            cursor: pointer;
+        }
+
+        .panorama-card:hover {
+            transform: translateY(-10px);
+        }
+
+        .panorama-img {
+            width: 100%;
+            height: 200px;
+            background-color: #eee;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--primary-color);
+            font-size: 3rem;
+            overflow: hidden;
+        }
+
+        .panorama-img img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: transform 0.3s;
+        }
+
+        .panorama-card:hover .panorama-img img {
+            transform: scale(1.05);
+        }
+
+        .panorama-content {
+            padding: 20px;
+        }
+
+        .panorama-content h3 {
+            color: var(--primary-color);
+            margin-bottom: 10px;
+        }
+
+        /* 建筑细节部分 */
+        .details-section {
+            padding: 60px 0;
+            background-color: #f5f7fa;
+        }
+
+        .details-container {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 30px;
+        }
+
+        .detail-card {
+            background-color: white;
+            border-radius: 10px;
+            overflow: hidden;
+            box-shadow: var(--shadow);
+            transition: transform 0.3s;
+        }
+
+        .detail-card:hover {
+            transform: translateY(-5px);
+        }
+
+        .detail-img {
+            width: 100%;
+            height: 250px;
+            background-color: #eee;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--primary-color);
+            font-size: 3rem;
+            overflow: hidden;
+            cursor: pointer;
+        }
+
+        .detail-img img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: transform 0.3s;
+        }
+
+        .detail-card:hover .detail-img img {
+            transform: scale(1.05);
+        }
+
+        .detail-content {
+            padding: 20px;
+        }
+
+        .detail-content h3 {
+            color: var(--primary-color);
+            margin-bottom: 10px;
+        }
+
+        /* 共生平台部分 */
+        .symbiosis-section {
+            padding: 60px 0;
+        }
+
+        .symbiosis-nav {
+            display: flex;
+            justify-content: center;
+            flex-wrap: wrap;
+            gap: 15px;
+            margin-bottom: 40px;
+        }
+
+        .symbiosis-btn {
+            padding: 10px 20px;
+            background: white;
+            border: 2px solid var(--primary-color);
+            border-radius: 30px;
+            cursor: pointer;
+            transition: all 0.3s;
+            font-weight: 500;
+        }
+
+        .symbiosis-btn.active {
+            background: var(--primary-color);
+            color: white;
+        }
+
+        .symbiosis-btn:hover:not(.active) {
+            background: rgba(74, 111, 165, 0.1);
+        }
+
+        .symbiosis-container {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            gap: 30px;
+        }
+
+        .symbiosis-card {
+            background-color: white;
+            border-radius: 10px;
+            overflow: hidden;
+            box-shadow: var(--shadow);
+            transition: transform 0.3s;
+            display: none;
+        }
+
+        .symbiosis-card.active {
+            display: block;
+        }
+
+        .symbiosis-card:hover {
+            transform: translateY(-5px);
+        }
+
+        .symbiosis-img {
+            width: 100%;
+            height: 250px;
+            background-color: #eee;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--primary-color);
+            font-size: 3rem;
+            overflow: hidden;
+            cursor: pointer;
+        }
+
+        .symbiosis-img img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: transform 0.3s;
+        }
+
+        .symbiosis-card:hover .symbiosis-img img {
+            transform: scale(1.05);
+        }
+
+        .symbiosis-content {
+            padding: 20px;
+        }
+
+        .symbiosis-content h3 {
+            color: var(--primary-color);
+            margin-bottom: 10px;
+        }
+
+        /* 奖牌展示部分 */
+        .awards-section {
+            padding: 60px 0;
+            background-color: #f5f7fa;
+        }
+
+        .awards-container {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            gap: 30px;
+        }
+
+        .award-card {
+            background-color: white;
+            border-radius: 10px;
+            overflow: hidden;
+            box-shadow: var(--shadow);
+            transition: transform 0.3s;
+        }
+
+        .award-card:hover {
+            transform: translateY(-5px);
+        }
+
+        .award-img {
+            width: 100%;
+            height: 250px;
+            background-color: #eee;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--primary-color);
+            font-size: 3rem;
+            overflow: hidden;
+            cursor: pointer;
+        }
+
+        .award-img img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: transform 0.3s;
+        }
+
+        .award-card:hover .award-img img {
+            transform: scale(1.05);
+        }
+
+        .award-content {
+            padding: 20px;
+        }
+
+        .award-content h3 {
+            color: var(--primary-color);
+            margin-bottom: 10px;
+        }
+
+        /* 全景查看器样式 */
+        .panorama-viewer {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.9);
+            z-index: 1000;
+            display: none;
+            flex-direction: column;
+        }
+
+        .panorama-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 15px 20px;
+            background-color: rgba(0, 0, 0, 0.7);
+            color: white;
+        }
+
+        .close-panorama {
+            background: none;
+            border: none;
+            color: white;
+            font-size: 1.5rem;
+            cursor: pointer;
+        }
+
+        .panorama-display {
+            width: 100%;
+            height: calc(100% - 60px);
+        }
+
+        @media (max-width: 768px) {
+            .timeline::after {
+                left: 31px;
+            }
+            
+            .timeline-item {
+                width: 100%;
+                padding-left: 70px;
+                padding-right: 25px;
+            }
+            
+            .timeline-item::after {
+                left: 18px;
+            }
+            
+            .right {
+                left: 0;
+            }
+            
+            .symbiosis-nav {
+                flex-direction: column;
+                align-items: center;
+            }
+            
+            .symbiosis-btn {
+                width: 80%;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- 浮动元素 -->
+    <div class="floating-elements">
+        <div class="floating-element"><i class="fas fa-school"></i></div>
+        <div class="floating-element"><i class="fas fa-history"></i></div>
+        <div class="floating-element"><i class="fas fa-landmark"></i></div>
+        <div class="floating-element"><i class="fas fa-book"></i></div>
+        <div class="floating-element"><i class="fas fa-graduation-cap"></i></div>
+    </div>
+
+    <!-- 导航栏 -->
+    <nav class="navbar">
+        <div class="container nav-container">
+            <div class="logo">
+                <h1>我们的校园记忆</h1>
+            </div>
+            <div class="nav-links">
+                <a href="index.html"><i class="fas fa-home"></i> 返回首页</a>
+                <a href="#timeline"><i class="fas fa-history"></i> 建筑编年史</a>
+                <a href="#panorama"><i class="fas fa-street-view"></i> 全景漫游</a>
+                <a href="#details"><i class="fas fa-archway"></i> 建筑细节</a>
+                <a href="#symbiosis"><i class="fas fa-hands-helping"></i> 共生平台</a>
+                <a href="#awards"><i class="fas fa-trophy"></i> 奖牌展示</a>
+            </div>
+        </div>
+    </nav>
+
+    <!-- 页面头部 -->
+    <header class="page-header">
+        <div class="container">
+            <h1>第一展厅 · 岁月留痕</h1>
+            <p>探索校园建筑变迁，体验3D全景漫游，欣赏建筑细节之美</p>
+        </div>
+    </header>
+
+    <!-- 展厅导航 -->
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            if (typeof initHallNavigation === 'function') {
+                initHallNavigation('museum');
+            }
+        });
+    </script>
+
+    <!-- 时间轴部分 -->
+    <section id="timeline" class="timeline-section">
+        <div class="container">
+            <h2 class="section-title">校园建筑编年史</h2>
+            <div class="timeline">
+                <!-- 1903-1907 凤山书院时期 -->
+                <div class="timeline-item left">
+                    <div class="timeline-content">
+                        <h3>1903-1907 · 凤山书院时期</h3>
+                        <div class="timeline-img">
+                            <img src="images/museum/42b7267889206dd5c31cca39efc815a5.jpg" alt="凤山书院大门">
+                        </div>
+                        <p><strong>历史背景：</strong>清光绪末年，废科举办新学之风兴起。建于北宋时期的凤山书院于1903年，由知州候少赢照会禀生刘震甲、陆燕昌，会同增生夏去峰、候选县丞陆庠等筹捐改建学堂。</p>
+                        <p><strong>建筑特点：</strong>1904年9月改建落成，初为蒙小学堂。1905年冬，改高初两等小学堂。据曾在凤山高小担任过校长的郁子贞老先生回忆，高等学堂共三个班，学生百余人。</p>
+                        <p><strong>文化意义：</strong>凤山书院为祀宋胡安定先生之祠，是海安地区重要的文化教育场所。</p>
+                    </div>
+                </div>
+                
+                <!-- 1907-1949 永兴庵时期 -->
+                <div class="timeline-item right">
+                    <div class="timeline-content">
+                        <h3>1907-1949 · 永兴庵时期</h3>
+                        <div class="timeline-img">
+                            <img src="images/museum/凤山书院2_20251008195744.jpg" alt="海安凤山初等学堂">
+                        </div>
+                        <p><strong>校址变迁：</strong>1907年，凤山初等学堂移至永兴庵，即原海安镇新华东路3号旧址，开启我校纪年篇章。</p>
+                        <p><strong>校名演变：</strong>
+                            <ul>
+                                <li>1913年，改称海安镇第三国民初等小学</li>
+                                <li>1923年，与第四高等小学校合并，改称凤山小学</li>
+                                <li>1927年，改称泰县第六学区中心小学</li>
+                                <li>1932年，改称泰县第四模范小学</li>
+                                <li>1936年，改称海安模范小学</li>
+                                <li>1949年，海安解放，改名为海安小学</li>
+                            </ul>
+                        </p>
+                    </div>
+                </div>
+                
+                <!-- 1950年代 建校初期 -->
+                <div class="timeline-item left">
+                    <div class="timeline-content">
+                        <h3>1950年代 · 建校初期</h3>
+                        <div class="timeline-img">
+                            <img src="images/museum/3_20251008195909.jpg" alt="上世纪50年代学校校舍">
+                        </div>
+                        <p><strong>学校命名：</strong>1951年，命名为海安县实验小学，城东初级小学并入，发展为18个班，学生近1000人。</p>
+                        <p><strong>规模扩大：</strong>1959年，徐坝小学撤并入校，学校发展为4轨24个班级。</p>
+                        <p><strong>建筑特点：</strong>校园最初只有一栋教学楼和一个小操场，周围是农田和村庄。</p>
+                    </div>
+                </div>
+                
+                <!-- 1960-1970年代 动荡时期 -->
+                <div class="timeline-item right">
+                    <div class="timeline-content">
+                        <h3>1960-1970年代 · 动荡时期</h3>
+                        <div class="timeline-img">
+                            <img src="images/museum/上世纪50年代学校校舍_20251008195916.JPG" alt="上世纪60-70年代学校校舍">
+                        </div>
+                        <p><strong>文革时期：</strong>
+                            <ul>
+                                <li>1968年，学校被更名为换新天小学</li>
+                                <li>1969年，再次被更名为东风小学</li>
+                            </ul>
+                        </p>
+                        <p><strong>恢复原名：</strong>1978年，恢复"海安县实验小学"称号。</p>
+                        <p><strong>建筑特点：</strong>学校进行了第一次大规模扩建，新增了两栋教学楼和一个图书馆。</p>
+                    </div>
+                </div>
+                
+                <!-- 1980-1990年代 现代化改造 -->
+                <div class="timeline-item left">
+                    <div class="timeline-content">
+                        <h3>1980-1990年代 · 现代化改造</h3>
+                        <div class="timeline-img">
+                            <img src="images/people/5.上世纪80年代学校领导班子合影.jpg" alt="上世纪80年代学校领导班子合影">
+                        </div>
+                        <p><strong>校址迁移：</strong>1998年11月，学校逐步迁址到中坝南路6号，即现校址。</p>
+                        <p><strong>设施升级：</strong>学校进行了现代化改造，修建了标准的运动场和实验楼。</p>
+                        <p><strong>少年宫建设：</strong>2000年，学校成立县办校管的海安县少年宫，丰富了学生的课外活动空间。</p>
+                    </div>
+                </div>
+                
+                <!-- 2000-2010年代 全面发展 -->
+                <div class="timeline-item right">
+                    <div class="timeline-content">
+                        <h3>2000-2010年代 · 全面发展</h3>
+                        <div class="timeline-img">
+                            <img src="images/people/6.学校建校80周年庆祝大会场景.jpg" alt="学校建校80周年庆祝大会场景">
+                        </div>
+                        <p><strong>合并与转型：</strong>2004年，与海安教师进修学校附属小学合并为海安县实验小学总校。</p>
+                        <p><strong>回归公办：</strong>2010年，学校转回公办体制，恢复名称为海安县实验小学。</p>
+                        <p><strong>设施完善：</strong>新建了艺术中心、体育馆和现代化图书馆，校园设施全面升级。</p>
+                    </div>
+                </div>
+                
+                <!-- 2020年代至今 智慧校园 -->
+                <div class="timeline-item left">
+                    <div class="timeline-content">
+                        <h3>2020年代至今 · 智慧校园与集团化发展</h3>
+                        <div class="timeline-img">
+                            <img src="images/museum/60555d22536d4a9d9ff0ab8111fd3f1b.png" alt="凤山校区启用">
+                        </div>
+                        <p><strong>集团化发展：</strong>
+                            <ul>
+                                <li>2017年，更名为：海安市实验小学</li>
+                                <li>2020年，海安市实验小学教育集团长江路校区启用</li>
+                                <li>2023年，海安市实验小学教育集团凤山校区启用</li>
+                            </ul>
+                        </p>
+                        <p><strong>智慧校园建设：</strong>建设智慧校园系统，全面升级教学设施和校园网络。</p>
+                        <p><strong>建筑特色：</strong>凤山校区融合传统书院文化与现代教育理念，成为学校发展的新里程碑。</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- 全景漫游部分 -->
+    <section id="panorama" class="panorama-section">
+        <div class="container">
+            <h2 class="section-title">3D全景漫游</h2>
+            <p style="text-align: center; margin-bottom: 40px; max-width: 800px; margin-left: auto; margin-right: auto;">
+                点击下方区域，体验校园关键区域的720度虚拟漫游。使用鼠标拖拽可以改变视角，滚轮可以缩放画面。
+            </p>
+            <div class="panorama-container">
+                <div class="panorama-card" data-panorama="main-building">
+                    <div class="panorama-img">
+                        <img src="images/museum/87805934f3a04c24e5d2bdf752df1eaa.jpg" alt="主教学楼">
+                    </div>
+                    <div class="panorama-content">
+                        <h3>主教学楼</h3>
+                        <p>探索我们校园最具代表性的建筑，感受70年历史沉淀。</p>
+                    </div>
+                </div>
+                <div class="panorama-card" data-panorama="library">
+                    <div class="panorama-img">
+                        <img src="images/museum/a3773c3ec62f9784ba5ed9432ca4d240.jpg" alt="图书馆">
+                    </div>
+                    <div class="panorama-content">
+                        <h3>图书馆</h3>
+                        <p>漫步知识的海洋，体验现代化图书馆的舒适与便捷。</p>
+                    </div>
+                </div>
+                <div class="panorama-card" data-panorama="sports-field">
+                    <div class="panorama-img">
+                        <img src="images/museum/78efe110768f60bdc1519e3dfe10daba.jpg" alt="运动场">
+                    </div>
+                    <div class="panorama-content">
+                        <h3>运动场</h3>
+                        <p>感受青春活力，体验标准化运动场的专业设施。</p>
+                    </div>
+                </div>
+                <div class="panorama-card" data-panorama="art-center">
+                    <div class="panorama-img">
+                        <img src="images/museum/7fabb335eda5397de7926616f4e6d590.jpg" alt="艺术中心">
+                    </div>
+                    <div class="panorama-content">
+                        <h3>艺术中心</h3>
+                        <p>欣赏艺术之美，体验创意空间的无限可能。</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- 全景查看器 -->
+    <div class="panorama-viewer" id="panoramaViewer">
+        <div class="panorama-header">
+            <h3 id="panoramaTitle">全景漫游</h3>
+            <button class="close-panorama" id="closePanorama">
+                <i class="fas fa-times"></i>
+            </button>
+        </div>
+        <div class="panorama-display" id="panoramaDisplay"></div>
+    </div>
+
+    <!-- 建筑细节部分 -->
+    <section id="details" class="details-section">
+        <div class="container">
+            <h2 class="section-title">建筑细节图谱</h2>
+            <p style="text-align: center; margin-bottom: 40px; max-width: 800px; margin-left: auto; margin-right: auto;">
+                展示校园建筑中有特色的窗花、地砖、门等细节的高清大图与解读
+            </p>
+            <div class="details-container">
+                <div class="detail-card">
+                    <div class="detail-img">
+                        <img src="images/museum/4b5222ca00f7351fc8283eb543df6aae.jpg" alt="特色窗花">
+                    </div>
+                    <div class="detail-content">
+                        <h3>特色窗花</h3>
+                        <p>主教学楼保留了建校初期的传统窗花设计，体现了当时的建筑美学。</p>
+                        <p>这些窗花不仅具有装饰功能，还蕴含着丰富的文化寓意。</p>
+                    </div>
+                </div>
+                <div class="detail-card">
+                    <div class="detail-img">
+                        <img src="images/museum/cd7346cffb8b952c65dc8bbf144cc04a.jpg" alt="地砖图案">
+                    </div>
+                    <div class="detail-content">
+                        <h3>地砖图案</h3>
+                        <p>校园内不同区域的地砖图案各具特色，反映了不同时期的建筑风格。</p>
+                        <p>图书馆区域的几何图案地砖尤为精美，是校园一道独特的风景。</p>
+                    </div>
+                </div>
+                <div class="detail-card">
+                    <div class="detail-img">
+                        <img src="images/museum/60555d22536d4a9d9ff0ab8111fd3f1b.png" alt="传统校门">
+                    </div>
+                    <div class="detail-content">
+                        <h3>传统校门</h3>
+                        <p>学校老校门采用传统中式设计，门楣上的校名由著名书法家题写。</p>
+                        <p>虽然后来新建了现代化校门，但老校门作为历史见证被完整保留。</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- 共生平台部分 -->
+    <section id="symbiosis" class="symbiosis-section">
+        <div class="container">
+            <h2 class="section-title">共生平台</h2>
+            <p style="text-align: center; margin-bottom: 40px; max-width: 800px; margin-left: auto; margin-right: auto;">
+                展示学校共生教育理念与实践成果
+            </p>
+            
+            <!-- 共生平台导航 -->
+            <div class="symbiosis-nav">
+                <div class="symbiosis-btn active" data-area="all">全部</div>
+                <div class="symbiosis-btn" data-area="team">共生团队</div>
+                <div class="symbiosis-btn" data-area="classroom">共生课堂</div>
+                <div class="symbiosis-btn" data-area="community">共生社区</div>
+            </div>
+            
+            <!-- 共生平台内容 -->
+            <div class="symbiosis-container">
+                <!-- 共生团队卡片 -->
+                <div class="symbiosis-card active" data-area="team">
+                    <div class="symbiosis-img">
+                        <img src="images/museum/部分获省教学一等奖以上教师.jpg" alt="共生团队">
+                    </div>
+                    <div class="symbiosis-content">
+                        <h3>共生团队</h3>
+                        <p>展示学校优秀教师团队的合作成果，包括跨学科教研组、名师工作室等。</p>
+                        <p>团队合作促进教师专业发展，推动学校教育教学改革。</p>
+                    </div>
+                </div>
+                
+                <!-- 共生课堂卡片 -->
+                <div class="symbiosis-card active" data-area="classroom">
+                    <div class="symbiosis-img">
+                        <img src="images/museum/“未名教育家”学习小组参加“天天向上”学习联盟交流活动.jpg" alt="共生课堂">
+                    </div>
+                    <div class="symbiosis-content">
+                        <h3>共生课堂</h3>
+                        <p>展示学校特色课堂教学模式，包括项目式学习、合作学习等。</p>
+                        <p>共生课堂注重师生互动、生生互动，营造积极的学习氛围。</p>
+                    </div>
+                </div>
+                
+                <!-- 共生社区卡片 -->
+                <div class="symbiosis-card active" data-area="community">
+                    <div class="symbiosis-img">
+                        <img src="images/museum/6e63aadf6e0436750f7ed9eae915e5c2.jpg" alt="共生社区">
+                    </div>
+                    <div class="symbiosis-content">
+                        <h3>共生社区</h3>
+                        <p>展示学校与社区的合作成果，包括社区服务、家长参与等。</p>
+                        <p>学校积极构建家校社协同育人机制，促进学生全面发展。</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- 奖牌展示部分 -->
+    <section id="awards" class="awards-section">
+        <div class="container">
+            <h2 class="section-title">奖牌展示</h2>
+            <p style="text-align: center; margin-bottom: 40px; max-width: 800px; margin-left: auto; margin-right: auto;">
+                展示学校历年来获得的各类荣誉奖项，记录学校发展的辉煌成就
+            </p>
+            
+            <div class="awards-container">
+                <!-- 国家级奖项 -->
+                <div class="award-card">
+                    <div class="award-img">
+                        <img src="images/museum/8b6e47aabf65a8d1a6fbaa843acae8e0.jpg" alt="国家级荣誉">
+                    </div>
+                    <div class="award-content">
+                        <h3>国家级荣誉</h3>
+                        <p>学校获得多项国家级荣誉，包括全国文明校园、全国教育系统先进集体等。</p>
+                        <p>这些荣誉是对学校办学成果的充分肯定。</p>
+                    </div>
+                </div>
+                
+                <!-- 省级奖项 -->
+                <div class="award-card">
+                    <div class="award-img">
+                        <img src="images/museum/微信图片_2025-10-08_105822_661.jpg" alt="省级荣誉">
+                    </div>
+                    <div class="award-content">
+                        <h3>省级荣誉</h3>
+                        <p>学校在省级评比中屡获殊荣，包括江苏省文明单位、江苏省教育科研先进集体等。</p>
+                        <p>这些奖项体现了学校在区域教育中的领先地位。</p>
+                    </div>
+                </div>
+                
+                <!-- 教学成果奖 -->
+                <div class="award-card">
+                    <div class="award-img">
+                        <img src="images/museum/16.秦瑜的全国文教先进个人证书.jpg" alt="教学成果奖">
+                    </div>
+                    <div class="award-content">
+                        <h3>教学成果奖</h3>
+                        <p>学校教师团队获得多项教学成果奖，包括国家级教学成果奖、省级教学成果奖等。</p>
+                        <p>这些奖项体现了学校教师队伍的专业水平和创新能力。</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- 页脚 -->
+    <footer>
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-section">
+                    <h3>关于我们</h3>
+                    <p>"我们的校园记忆"线上数字博物馆致力于保存和展示校园历史文化</p>
+                </div>
+                <div class="footer-section">
+                    <h3>联系我们</h3>
+                    <p>邮箱：campusmemory@example.com</p>
+                    <p>电话：010-12345678</p>
+                </div>
+                <div class="footer-section">
+                    <h3>关注我们</h3>
+                    <p>微信公众号：校园记忆</p>
+                    <p>微博：@我们的校园记忆</p>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                <p>&copy; 2025 我们的校园记忆线上数字博物馆 版权所有</p>
+            </div>
+        </div>
+    </footer>
+
+    <!-- 图片全屏查看器 -->
+    <div class="image-viewer" id="imageViewer">
+        <div class="image-viewer-header">
+            <h3 id="imageViewerTitle">图片查看</h3>
+            <div class="image-viewer-controls">
+                <button id="zoomInBtn"><i class="fas fa-search-plus"></i></button>
+                <button id="zoomOutBtn"><i class="fas fa-search-minus"></i></button>
+                <button id="resetZoomBtn"><i class="fas fa-sync-alt"></i></button>
+                <button id="closeImageViewer"><i class="fas fa-times"></i></button>
+            </div>
+        </div>
+        <div class="image-viewer-body">
+            <img id="fullscreenImage" class="image-viewer-img" src="" alt="全屏图片">
+        </div>
+        <div class="image-viewer-footer">
+            <p id="imageViewerCaption">图片描述</p>
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/pannellum@2.5.6/build/pannellum.js"></script>
+    <script src="js/main.js"></script>
+    <script>
+        // 时间轴滚动动画
+        function checkTimelineItems() {
+            const timelineItems = document.querySelectorAll('.timeline-item');
+            
+            timelineItems.forEach(item => {
+                const itemTop = item.getBoundingClientRect().top;
+                const windowHeight = window.innerHeight;
+                
+                if (itemTop < windowHeight * 0.85) {
+                    item.classList.add('visible');
+                }
+            });
+        }
+        
+        window.addEventListener('load', checkTimelineItems);
+        window.addEventListener('scroll', checkTimelineItems);
+        
+        // 全景漫游功能
+        const panoramaViewer = document.getElementById('panoramaViewer');
+        const panoramaDisplay = document.getElementById('panoramaDisplay');
+        const closePanorama = document.getElementById('closePanorama');
+        const panoramaTitle = document.getElementById('panoramaTitle');
+        
+        // 全景图配置
+        const panoramaConfigs = {
+            'main-building': {
+                title: '主教学楼全景',
+                image: 'images/panorama/main-building.jpg'
+            },
+            'library': {
+                title: '图书馆全景',
+                image: 'images/panorama/library.jpg'
+            },
+            'sports-field': {
+                title: '运动场全景',
+                image: 'images/panorama/sports-field.jpg'
+            },
+            'art-center': {
+                title: '艺术中心全景',
+                image: 'images/panorama/art-center.jpg'
+            }
+        };
+        
+        let viewer = null;
+        
+        // 打开全景查看器
+        document.querySelectorAll('.panorama-card').forEach(card => {
+            card.addEventListener('click', function() {
+                const panoramaId = this.getAttribute('data-panorama');
+                const config = panoramaConfigs[panoramaId];
+                
+                if (config) {
+                    panoramaTitle.textContent = config.title;
+                    panoramaViewer.style.display = 'flex';
+                    
+                    // 初始化全景查看器
+                    viewer = pannellum.viewer('panoramaDisplay', {
+                        "type": "equirectangular",
+                        "panorama": config.image,
+                        "autoLoad": true,
+                        "autoRotate": -2,
+                        "showZoomCtrl": true,
+                        "showFullscreenCtrl": true
+                    });
+                } else {
+                    alert('全景功能正在开发中，敬请期待！');
+                }
+            });
+        });
+        
+        // 关闭全景查看器
+        closePanorama.addEventListener('click', function() {
+            panoramaViewer.style.display = 'none';
+            if (viewer) {
+                viewer.destroy();
+                viewer = null;
+            }
+        });
+        
+        // 共生平台筛选功能
+        document.querySelectorAll('.symbiosis-btn').forEach(btn => {
+            btn.addEventListener('click', function() {
+                document.querySelectorAll('.symbiosis-btn').forEach(b => {
+                    b.classList.remove('active');
+                });
+                
+                this.classList.add('active');
+                
+                const selectedArea = this.getAttribute('data-area');
+                
+                document.querySelectorAll('.symbiosis-card').forEach(card => {
+                    if (selectedArea === 'all' || card.getAttribute('data-area') === selectedArea) {
+                        card.classList.add('active');
+                    } else {
+                        card.classList.remove('active');
+                    }
+                });
+            });
+        });
+    </script>
+</body>
+</html>

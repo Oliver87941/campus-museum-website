@@ -1,0 +1,517 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>第二展厅·人物长廊 - 我们的校园记忆</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="css/style.css">
+    <style>
+        /* 人物分类导航 */
+        .people-nav {
+            display: flex;
+            justify-content: center;
+            margin-bottom: 50px;
+            background-color: white;
+            border-radius: 50px;
+            padding: 10px;
+            box-shadow: var(--shadow);
+            max-width: 600px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+        .nav-item {
+            padding: 12px 25px;
+            border-radius: 30px;
+            cursor: pointer;
+            transition: all 0.3s;
+            font-weight: 500;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .nav-item.active {
+            background-color: var(--primary-color);
+            color: white;
+        }
+
+        .nav-item:hover:not(.active) {
+            background-color: rgba(74, 111, 165, 0.1);
+        }
+
+        /* 人物展示区 */
+        .people-section {
+            padding: 40px 0;
+            display: none;
+        }
+
+        .people-section.active {
+            display: block;
+        }
+
+        .people-container {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            gap: 30px;
+        }
+
+        .person-card {
+            background-color: white;
+            border-radius: 10px;
+            overflow: hidden;
+            box-shadow: var(--shadow);
+            transition: transform 0.3s;
+        }
+
+        .person-card:hover {
+            transform: translateY(-10px);
+        }
+
+        .person-img {
+            width: 100%;
+            height: 250px;
+            background-color: #eee;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--primary-color);
+            font-size: 4rem;
+            overflow: hidden;
+            cursor: pointer;
+        }
+
+        .person-img img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: transform 0.3s;
+        }
+
+        .person-card:hover .person-img img {
+            transform: scale(1.05);
+        }
+
+        .person-content {
+            padding: 20px;
+        }
+
+        .person-content h3 {
+            color: var(--primary-color);
+            margin-bottom: 10px;
+            font-size: 1.3rem;
+        }
+
+        .person-title {
+            color: var(--accent-color);
+            font-weight: 600;
+            margin-bottom: 10px;
+            font-size: 0.9rem;
+        }
+
+        .person-description {
+            margin-bottom: 15px;
+            font-size: 0.95rem;
+        }
+
+        .person-achievements {
+            border-top: 1px solid #eee;
+            padding-top: 15px;
+        }
+
+        .person-achievements ul {
+            padding-left: 20px;
+        }
+
+        .person-achievements li {
+            margin-bottom: 8px;
+            font-size: 0.9rem;
+        }
+
+        @media (max-width: 768px) {
+            .people-nav {
+                flex-direction: column;
+                border-radius: 15px;
+                max-width: 300px;
+            }
+            
+            .nav-item {
+                border-radius: 10px;
+                margin-bottom: 5px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- 浮动元素 -->
+    <div class="floating-elements">
+        <div class="floating-element"><i class="fas fa-user-graduate"></i></div>
+        <div class="floating-element"><i class="fas fa-chalkboard-teacher"></i></div>
+        <div class="floating-element"><i class="fas fa-award"></i></div>
+        <div class="floating-element"><i class="fas fa-users"></i></div>
+        <div class="floating-element"><i class="fas fa-heart"></i></div>
+    </div>
+
+    <!-- 导航栏 -->
+    <nav class="navbar">
+        <div class="container nav-container">
+            <div class="logo">
+                <h1>我们的校园记忆</h1>
+            </div>
+            <div class="nav-links">
+                <a href="index.html"><i class="fas fa-home"></i> 返回首页</a>
+                <a href="#teachers"><i class="fas fa-chalkboard-teacher"></i> 师者风范</a>
+                <a href="#alumni"><i class="fas fa-user-graduate"></i> 校友星光</a>
+                <a href="#heroes"><i class="fas fa-users"></i> 幕后英雄</a>
+            </div>
+        </div>
+    </nav>
+
+    <!-- 页面头部 -->
+    <header class="page-header">
+        <div class="container">
+            <h1>第二展厅 · 人物长廊</h1>
+            <p>了解历代名师风采，追寻校友足迹，致敬校园幕后英雄</p>
+        </div>
+    </header>
+
+    <!-- 展厅导航 -->
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            if (typeof initHallNavigation === 'function') {
+                initHallNavigation('people');
+            }
+        });
+    </script>
+
+    <!-- 人物分类导航 -->
+    <div class="container">
+        <div class="people-nav">
+            <div class="nav-item active" data-target="teachers">
+                <i class="fas fa-chalkboard-teacher"></i> 师者风范
+            </div>
+            <div class="nav-item" data-target="alumni">
+                <i class="fas fa-user-graduate"></i> 校友星光
+            </div>
+            <div class="nav-item" data-target="heroes">
+                <i class="fas fa-users"></i> 幕后英雄
+            </div>
+        </div>
+    </div>
+
+    <!-- 师者风范部分 -->
+    <section id="teachers" class="people-section active">
+        <div class="container">
+            <h2 class="section-title">师者风范</h2>
+            <p style="text-align: center; margin-bottom: 40px; max-width: 800px; margin-left: auto; margin-right: auto;">
+                展示历代名师和现任名师介绍，传承教育精神
+            </p>
+            <div class="people-container">
+                <!-- 名师卡片 -->
+                <div class="person-card">
+                    <div class="person-img">
+                        <img src="images/people/校长11周振宇.jpg" alt="周振宇校长">
+                    </div>
+                    <div class="person-content">
+                        <h3>周振宇</h3>
+                        <div class="person-title">现任校长，江苏省特级教师</div>
+                        <div class="person-description">
+                            全国首批未来教育家培养对象，江苏省苏教名家培养对象，江苏省333技术拔尖人才，江苏省小学科学专委会副理事长。
+                        </div>
+                        <div class="person-achievements">
+                            <ul>
+                                <li>主持多项国家级、省级教育科研课题</li>
+                                <li>发表教育研究论文30余篇</li>
+                                <li>获全国教育科研成果一等奖</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="person-card">
+                    <div class="person-img">
+                        <img src="images/people/陆晓林.jpg" alt="陆晓林老师">
+                    </div>
+                    <div class="person-content">
+                        <h3>陆晓林</h3>
+                        <div class="person-title">正高级教师</div>
+                        <div class="person-description">
+                            南通市优秀教育工作者，南通市学科带头人，南通市"226工程"高层次人才培养对象。
+                        </div>
+                        <div class="person-achievements">
+                            <ul>
+                                <li>长期从事小学数学教学研究</li>
+                                <li>多篇论文在省级以上刊物发表</li>
+                                <li>指导青年教师获省级教学竞赛一等奖</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="person-card">
+                    <div class="person-img">
+                        <img src="images/people/金沙.jpg" alt="金沙校长">
+                    </div>
+                    <div class="person-content">
+                        <h3>金沙</h3>
+                        <div class="person-title">前任校长，特级教师</div>
+                        <div class="person-description">
+                            1990-2003年担任校长，学校发展的关键推动者之一。
+                        </div>
+                        <div class="person-achievements">
+                            <ul>
+                                <li>推动学校现代化改革</li>
+                                <li>建立学校科研体系</li>
+                                <li>培养多名骨干教师</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- 校友星光部分 -->
+    <section id="alumni" class="people-section">
+        <div class="container">
+            <h2 class="section-title">校友星光</h2>
+            <p style="text-align: center; margin-bottom: 40px; max-width: 800px; margin-left: auto; margin-right: auto;">
+                展示在各行各业做出贡献的校友事迹，形成榜样力量
+            </p>
+            <div class="people-container">
+                <!-- 校友卡片 -->
+                <div class="person-card">
+                    <div class="person-img">
+                        <img src="images/people/1.陈亮，93届校友，清华大学硕士.jpg" alt="陈亮校友">
+                    </div>
+                    <div class="person-content">
+                        <h3>陈亮</h3>
+                        <div class="person-title">93届校友，清华大学硕士</div>
+                        <div class="person-description">
+                            在信息技术领域取得突出成就，现任某科技公司首席技术官。
+                        </div>
+                        <div class="person-achievements">
+                            <ul>
+                                <li>主持开发多项国家级信息化项目</li>
+                                <li>获得多项技术专利</li>
+                                <li>被评为行业领军人物</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="person-card">
+                    <div class="person-img">
+                        <img src="images/people/9.陆本魁（左一），1952届校友原南京紫金山天文台台长，著名科学家 图为胡锦涛总书记视察 紫金山天文时的情景.jpg" alt="陆本魁校友">
+                    </div>
+                    <div class="person-content">
+                        <h3>陆本魁</h3>
+                        <div class="person-title">52届校友，原南京紫金山天文台台长</div>
+                        <div class="person-description">
+                            著名科学家，在天文学研究领域做出重要贡献。
+                        </div>
+                        <div class="person-achievements">
+                            <ul>
+                                <li>主持多项国家级天文研究项目</li>
+                                <li>发现多颗小行星</li>
+                                <li>荣获国家自然科学奖</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="person-card">
+                    <div class="person-img">
+                        <img src="images/people/8.卢立，1995届校友 国际奥林匹克生物竞赛得住，毕业于北京大学，德国海德堡大学博士，图为卢立与我校部分老师合影.jpg" alt="卢立校友">
+                    </div>
+                    <div class="person-content">
+                        <h3>卢立</h3>
+                        <div class="person-title">95届校友，德国海德堡大学博士</div>
+                        <div class="person-description">
+                            国际奥林匹克生物竞赛金牌得主，毕业于北京大学。
+                        </div>
+                        <div class="person-achievements">
+                            <ul>
+                                <li>获国际奥赛生物金牌</li>
+                                <li>在知名学术期刊发表多篇论文</li>
+                                <li>参与国际合作科研项目</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- 幕后英雄部分 -->
+    <section id="heroes" class="people-section">
+        <div class="container">
+            <h2 class="section-title">幕后英雄</h2>
+            <p style="text-align: center; margin-bottom: 40px; max-width: 800px; margin-left: auto; margin-right: auto;">
+                为保安、保洁、园丁、食堂员工设立专栏，让他们的付出被看见、被铭记
+            </p>
+            <div class="people-container">
+                <!-- 幕后英雄卡片 -->
+                <div class="person-card">
+                    <div class="person-img">
+                        <img src="images/people/110周年全体教职员工合影.jpg" alt="张师傅">
+                    </div>
+                    <div class="person-content">
+                        <h3>张师傅</h3>
+                        <div class="person-title">校园保安，在校工作15年</div>
+                        <div class="person-description">
+                            每天最早到校，最晚离校，守护着校园的安全，被师生亲切地称为"校园守护神"。
+                        </div>
+                        <div class="person-achievements">
+                            <ul>
+                                <li>15年零安全事故记录</li>
+                                <li>多次帮助走失儿童找到家人</li>
+                                <li>及时发现并排除安全隐患</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="person-card">
+                    <div class="person-img">
+                        <img src="images/people/110周年全体教职员工合影.jpg" alt="李阿姨">
+                    </div>
+                    <div class="person-content">
+                        <h3>李阿姨</h3>
+                        <div class="person-title">保洁员，在校工作12年</div>
+                        <div class="person-description">
+                            用辛勤的汗水保持校园的整洁美丽，默默无闻地为大家创造干净舒适的学习环境。
+                        </div>
+                        <div class="person-achievements">
+                            <ul>
+                                <li>负责区域始终保持清洁</li>
+                                <li>多次拾金不昧归还失主</li>
+                                <li>关心照顾低年级学生</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="person-card">
+                    <div class="person-img">
+                        <img src="images/people/110周年全体教职员工合影.jpg" alt="王师傅">
+                    </div>
+                    <div class="person-content">
+                        <h3>王师傅</h3>
+                        <div class="person-title">园丁，在校工作20年</div>
+                        <div class="person-description">
+                            用双手培育校园的一草一木，让校园四季如画，为师生创造优美的学习环境。
+                        </div>
+                        <div class="person-achievements">
+                            <ul>
+                                <li>培育多种珍稀植物</li>
+                                <li>设计校园绿化景观</li>
+                                <li>带领学生开展种植活动</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- 页脚 -->
+    <footer>
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-section">
+                    <h3>关于我们</h3>
+                    <p>"我们的校园记忆"线上数字博物馆致力于保存和展示校园历史文化</p>
+                </div>
+                <div class="footer-section">
+                    <h3>联系我们</h3>
+                    <p>邮箱：campusmemory@example.com</p>
+                    <p>电话：010-12345678</p>
+                </div>
+                <div class="footer-section">
+                    <h3>关注我们</h3>
+                    <p>微信公众号：校园记忆</p>
+                    <p>微博：@我们的校园记忆</p>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                <p>&copy; 2025 我们的校园记忆线上数字博物馆 版权所有</p>
+            </div>
+        </div>
+    </footer>
+
+    <!-- 图片全屏查看器 -->
+    <div class="image-viewer" id="imageViewer">
+        <div class="image-viewer-header">
+            <h3 id="imageViewerTitle">图片查看</h3>
+            <div class="image-viewer-controls">
+                <button id="zoomInBtn"><i class="fas fa-search-plus"></i></button>
+                <button id="zoomOutBtn"><i class="fas fa-search-minus"></i></button>
+                <button id="resetZoomBtn"><i class="fas fa-sync-alt"></i></button>
+                <button id="closeImageViewer"><i class="fas fa-times"></i></button>
+            </div>
+        </div>
+        <div class="image-viewer-body">
+            <img id="fullscreenImage" class="image-viewer-img" src="" alt="全屏图片">
+        </div>
+        <div class="image-viewer-footer">
+            <p id="imageViewerCaption">图片描述</p>
+        </div>
+    </div>
+
+    <script src="js/main.js"></script>
+    <script>
+        // 导航切换功能
+        document.querySelectorAll('.nav-item').forEach(item => {
+            item.addEventListener('click', function() {
+                // 移除所有导航项的active类
+                document.querySelectorAll('.nav-item').forEach(nav => {
+                    nav.classList.remove('active');
+                });
+                
+                // 为当前导航项添加active类
+                this.classList.add('active');
+                
+                // 获取目标区域
+                const target = this.getAttribute('data-target');
+                
+                // 隐藏所有区域
+                document.querySelectorAll('.people-section').forEach(section => {
+                    section.classList.remove('active');
+                });
+                
+                // 显示目标区域
+                document.getElementById(target).classList.add('active');
+            });
+        });
+        
+        // 平滑滚动到锚点
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                
+                const targetId = this.getAttribute('href');
+                if(targetId === '#') return;
+                
+                const targetElement = document.querySelector(targetId);
+                if(targetElement) {
+                    // 如果目标区域是当前隐藏的区域，先切换到该区域
+                    if(!targetElement.classList.contains('active')) {
+                        const targetNav = document.querySelector(`.nav-item[data-target="${targetId.substring(1)}"]`);
+                        if(targetNav) {
+                            targetNav.click();
+                        }
+                    }
+                    
+                    // 滚动到目标区域
+                    window.scrollTo({
+                        top: targetElement.offsetTop - 100,
+                        behavior: 'smooth'
+                    });
+                }
+            });
+        });
+    </script>
+</body>
+</html>
