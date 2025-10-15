@@ -203,37 +203,6 @@ function initFilterButtons(buttonClass, cardClass, dataAttribute) {
     });
 }
 
-// 初始化函数
-document.addEventListener('DOMContentLoaded', function() {
-    initSmoothScroll();
-    initCardAnimations();
-    initImageViewer();
-    
-    // 图片错误处理
-    document.querySelectorAll('img').forEach(img => {
-        img.addEventListener('error', function() {
-            handleImageError(this);
-        });
-    });
-    
-    // 初始化筛选功能
-    initFilterButtons('.decade-btn', '.photo-card', 'data-year');
-    initFilterButtons('.timeline-btn', '.figure-card', 'data-era');
-    initFilterButtons('.symbiosis-btn', '.symbiosis-card', 'data-area');
-});
-
-// 导出函数供其他脚本使用
-if (typeof module !== 'undefined' && module.exports) {
-    module.exports = {
-        initHallNavigation,
-        handleImageError,
-        initSmoothScroll,
-        initCardAnimations,
-        initImageViewer,
-        initFilterButtons
-    };
-
-}
 // 背景音乐控制功能
 function initBackgroundMusic() {
     // 创建音频元素
@@ -328,3 +297,15 @@ document.addEventListener('DOMContentLoaded', function() {
     initFilterButtons('.timeline-btn', '.figure-card', 'data-era');
     initFilterButtons('.symbiosis-btn', '.symbiosis-card', 'data-area');
 });
+
+// 导出函数供其他脚本使用
+if (typeof module !== 'undefined' && module.exports) {
+    module.exports = {
+        initHallNavigation,
+        handleImageError,
+        initSmoothScroll,
+        initCardAnimations,
+        initImageViewer,
+        initFilterButtons
+    };
+}
