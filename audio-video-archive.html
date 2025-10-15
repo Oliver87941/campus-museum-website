@@ -5,154 +5,8 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>第三展厅·声影档案馆 - 我们的校园记忆</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="css/style.css">
     <style>
-        :root {
-            --primary-color: #4a6fa5;
-            --secondary-color: #6bbf8a;
-            --accent-color: #e76f51;
-            --dark-color: #2d3748;
-            --light-color: #f8f9fa;
-            --shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
-        }
-
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-        }
-
-        body {
-            background-color: #f5f7fa;
-            color: #333;
-            line-height: 1.6;
-        }
-
-        .container {
-            width: 90%;
-            max-width: 1200px;
-            margin: 0 auto;
-            padding: 0 15px;
-        }
-
-        /* 浮动元素 */
-        .floating-elements {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            pointer-events: none;
-            z-index: -1;
-        }
-
-        .floating-element {
-            position: absolute;
-            color: rgba(74, 111, 165, 0.1);
-            font-size: 2rem;
-            animation: float 20s infinite linear;
-        }
-
-        .floating-element:nth-child(1) {
-            top: 10%;
-            left: 5%;
-            animation-delay: 0s;
-        }
-
-        .floating-element:nth-child(2) {
-            top: 70%;
-            left: 10%;
-            animation-delay: -5s;
-        }
-
-        .floating-element:nth-child(3) {
-            top: 30%;
-            left: 80%;
-            animation-delay: -10s;
-        }
-
-        .floating-element:nth-child(4) {
-            top: 80%;
-            left: 85%;
-            animation-delay: -15s;
-        }
-
-        .floating-element:nth-child(5) {
-            top: 50%;
-            left: 50%;
-            animation-delay: -7s;
-        }
-
-        @keyframes float {
-            0% {
-                transform: translateY(0) rotate(0deg);
-            }
-            100% {
-                transform: translateY(-100px) rotate(360deg);
-            }
-        }
-
-        /* 导航栏 */
-        .navbar {
-            background-color: white;
-            box-shadow: var(--shadow);
-            position: sticky;
-            top: 0;
-            z-index: 1000;
-        }
-
-        .nav-container {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            padding: 15px 0;
-        }
-
-        .logo h1 {
-            color: var(--primary-color);
-            font-size: 1.5rem;
-        }
-
-        .nav-links {
-            display: flex;
-            gap: 20px;
-        }
-
-        .nav-links a {
-            text-decoration: none;
-            color: var(--dark-color);
-            font-weight: 500;
-            transition: color 0.3s;
-            display: flex;
-            align-items: center;
-            gap: 5px;
-        }
-
-        .nav-links a:hover {
-            color: var(--primary-color);
-        }
-
-        /* 页面头部 */
-        .page-header {
-            background: linear-gradient(135deg, var(--primary-color), #3a5985);
-            color: white;
-            padding: 60px 0;
-            text-align: center;
-            margin-bottom: 40px;
-        }
-
-        .page-header h1 {
-            font-size: 2.5rem;
-            margin-bottom: 15px;
-        }
-
-        .page-header p {
-            font-size: 1.1rem;
-            max-width: 700px;
-            margin: 0 auto;
-            opacity: 0.9;
-        }
-
         /* 档案馆分类导航 */
         .archive-nav {
             display: flex;
@@ -195,23 +49,6 @@
 
         .archive-section.active {
             display: block;
-        }
-
-        .section-title {
-            text-align: center;
-            font-size: 2rem;
-            color: var(--primary-color);
-            margin-bottom: 20px;
-            position: relative;
-        }
-
-        .section-title:after {
-            content: '';
-            display: block;
-            width: 80px;
-            height: 3px;
-            background: var(--accent-color);
-            margin: 10px auto;
         }
 
         /* 老照片库样式 */
@@ -724,36 +561,6 @@
             font-size: 0.9rem;
         }
 
-        /* 页脚样式 */
-        footer {
-            background-color: var(--dark-color);
-            color: white;
-            padding: 50px 0 20px;
-            margin-top: 50px;
-        }
-
-        .footer-content {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-            gap: 30px;
-            margin-bottom: 30px;
-        }
-
-        .footer-section h3 {
-            font-size: 1.2rem;
-            margin-bottom: 15px;
-            color: var(--secondary-color);
-        }
-
-        .footer-bottom {
-            text-align: center;
-            padding-top: 20px;
-            border-top: 1px solid rgba(255, 255, 255, 0.1);
-            font-size: 0.9rem;
-            opacity: 0.8;
-        }
-
-        /* 响应式设计 */
         @media (max-width: 768px) {
             .archive-nav {
                 flex-direction: column;
@@ -785,18 +592,6 @@
             
             .audio-versions {
                 flex-direction: column;
-            }
-            
-            .nav-links {
-                display: none;
-            }
-            
-            .page-header h1 {
-                font-size: 2rem;
-            }
-            
-            .section-title {
-                font-size: 1.7rem;
             }
         }
     </style>
@@ -834,6 +629,15 @@
             <p>浏览珍贵老照片，聆听口述历史，观看历年活动影像，了解校园重要人物</p>
         </div>
     </header>
+
+    <!-- 展厅导航 -->
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            if (typeof initHallNavigation === 'function') {
+                initHallNavigation('archive');
+            }
+        });
+    </script>
 
     <!-- 档案馆分类导航 -->
     <div class="container">
@@ -884,7 +688,7 @@
                 <!-- 建校初期照片 -->
                 <div class="photo-card" data-year="1900s">
                     <div class="photo-img">
-                        <img src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='400' height='300' viewBox='0 0 400 300'%3E%3Crect width='400' height='300' fill='%234a6fa5'/%3E%3Ctext x='50%25' y='50%25' dominant-baseline='middle' text-anchor='middle' font-family='Arial' font-size='24' fill='white'%3E凤山书院原貌%3C/text%3E%3C/svg%3E" alt="凤山书院原貌">
+                        <img src="images/museum/凤山书院2_20251008195744.jpg" alt="凤山书院原貌">
                     </div>
                     <div class="photo-content">
                         <div class="photo-title">凤山书院原貌</div>
@@ -896,7 +700,7 @@
                 <!-- 1950年代照片 -->
                 <div class="photo-card" data-year="1950s">
                     <div class="photo-img">
-                        <img src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='400' height='300' viewBox='0 0 400 300'%3E%3Crect width='400' height='300' fill='%236bbf8a'/%3E%3Ctext x='50%25' y='50%25' dominant-baseline='middle' text-anchor='middle' font-family='Arial' font-size='24' fill='white'%3E1950年六一儿童节活动%3C/text%3E%3C/svg%3E" alt="1950年六一儿童节活动">
+                        <img src="images/museum/12.1950年”六一“儿童节活动 (1).jpg" alt="1950年六一儿童节活动">
                     </div>
                     <div class="photo-content">
                         <div class="photo-title">1950年六一儿童节活动</div>
@@ -907,7 +711,7 @@
                 
                 <div class="photo-card" data-year="1950s">
                     <div class="photo-img">
-                        <img src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='400' height='300' viewBox='0 0 400 300'%3E%3Crect width='400' height='300' fill='%23e76f51'/%3E%3Ctext x='50%25' y='50%25' dominant-baseline='middle' text-anchor='middle' font-family='Arial' font-size='24' fill='white'%3E1957年全校女教师合影%3C/text%3E%3C/svg%3E" alt="1957年全校女教师合影">
+                        <img src="images/people/4.1957年全校女教师合影.jpg" alt="1957年全校女教师合影">
                     </div>
                     <div class="photo-content">
                         <div class="photo-title">1957年全校女教师合影</div>
@@ -919,7 +723,7 @@
                 <!-- 1960年代照片 -->
                 <div class="photo-card" data-year="1960s">
                     <div class="photo-img">
-                        <img src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='400' height='300' viewBox='0 0 400 300'%3E%3Crect width='400' height='300' fill='%234a6fa5'/%3E%3Ctext x='50%25' y='50%25' dominant-baseline='middle' text-anchor='middle' font-family='Arial' font-size='24' fill='white'%3E1962年教学实况录播%3C/text%3E%3C/svg%3E" alt="1962年教学实况录播">
+                        <img src="images/people/14.1962年江苏省人民广播电台录播了我校张如娟老师的教学实况.jpg" alt="1962年教学实况录播">
                     </div>
                     <div class="photo-content">
                         <div class="photo-title">1962年教学实况录播</div>
@@ -931,7 +735,7 @@
                 <!-- 1970年代照片 -->
                 <div class="photo-card" data-year="1970s">
                     <div class="photo-img">
-                        <img src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='400' height='300' viewBox='0 0 400 300'%3E%3Crect width='400' height='300' fill='%236bbf8a'/%3E%3Ctext x='50%25' y='50%25' dominant-baseline='middle' text-anchor='middle' font-family='Arial' font-size='24' fill='white'%3E1975年教师合影%3C/text%3E%3C/svg%3E" alt="1975年教师合影">
+                        <img src="images/people/8.1975年教师合影.jpg" alt="1975年教师合影">
                     </div>
                     <div class="photo-content">
                         <div class="photo-title">1975年教师合影</div>
@@ -943,7 +747,7 @@
                 <!-- 1980年代照片 -->
                 <div class="photo-card" data-year="1980s">
                     <div class="photo-img">
-                        <img src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='400' height='300' viewBox='0 0 400 300'%3E%3Crect width='400' height='300' fill='%23e76f51'/%3E%3Ctext x='50%25' y='50%25' dominant-baseline='middle' text-anchor='middle' font-family='Arial' font-size='24' fill='white'%3E学校建校80周年庆祝大会%3C/text%3E%3C/svg%3E" alt="学校建校80周年庆祝大会">
+                        <img src="images/museum/6.学校建校80周年庆祝大会场景.jpg" alt="学校建校80周年庆祝大会">
                     </div>
                     <div class="photo-content">
                         <div class="photo-title">学校建校80周年庆祝大会</div>
@@ -954,7 +758,7 @@
                 
                 <div class="photo-card" data-year="1980s">
                     <div class="photo-img">
-                        <img src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='400' height='300' viewBox='0 0 400 300'%3E%3Crect width='400' height='300' fill='%234a6fa5'/%3E%3Ctext x='50%25' y='50%25' dominant-baseline='middle' text-anchor='middle' font-family='Arial' font-size='24' fill='white'%3E1988年新教学楼落成%3C/text%3E%3C/svg%3E" alt="1988年新教学楼落成">
+                        <img src="images/museum/1998.png" alt="1988年新教学楼落成">
                     </div>
                     <div class="photo-content">
                         <div class="photo-title">1988年新教学楼落成</div>
@@ -966,7 +770,7 @@
                 <!-- 1990年代照片 -->
                 <div class="photo-card" data-year="1990s">
                     <div class="photo-img">
-                        <img src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='400' height='300' viewBox='0 0 400 300'%3E%3Crect width='400' height='300' fill='%236bbf8a'/%3E%3Ctext x='50%25' y='50%25' dominant-baseline='middle' text-anchor='middle' font-family='Arial' font-size='24' fill='white'%3E1995年校园文化艺术节%3C/text%3E%3C/svg%3E" alt="1995年校园文化艺术节">
+                        <img src="images/museum/8.卢立，1995届校友 国际奥林匹克生物竞赛得住，毕业于北京大学，德国海德堡大学博士，图为卢立与我校部分老师合影.jpg" alt="1995年校园文化艺术节">
                     </div>
                     <div class="photo-content">
                         <div class="photo-title">1995年校园文化艺术节</div>
@@ -978,7 +782,7 @@
                 <!-- 2000年代照片 -->
                 <div class="photo-card" data-year="2000s">
                     <div class="photo-img">
-                        <img src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='400' height='300' viewBox='0 0 400 300'%3E%3Crect width='400' height='300' fill='%23e76f51'/%3E%3Ctext x='50%25' y='50%25' dominant-baseline='middle' text-anchor='middle' font-family='Arial' font-size='24' fill='white'%3E少年宫落成典礼%3C/text%3E%3C/svg%3E" alt="少年宫落成典礼">
+                        <img src="images/museum/7.少年宫落成典礼.jpg" alt="少年宫落成典礼">
                     </div>
                     <div class="photo-content">
                         <div class="photo-title">少年宫落成典礼</div>
@@ -989,7 +793,7 @@
                 
                 <div class="photo-card" data-year="2000s">
                     <div class="photo-img">
-                        <img src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='400' height='300' viewBox='0 0 400 300'%3E%3Crect width='400' height='300' fill='%234a6fa5'/%3E%3Ctext x='50%25' y='50%25' dominant-baseline='middle' text-anchor='middle' font-family='Arial' font-size='24' fill='white'%3E学校100周年校庆盛典%3C/text%3E%3C/svg%3E" alt="学校100周年校庆盛典">
+                        <img src="images/museum/100周年全体教职员工合影.jpg" alt="学校100周年校庆盛典">
                     </div>
                     <div class="photo-content">
                         <div class="photo-title">学校100周年校庆盛典</div>
@@ -1018,15 +822,15 @@
                     </div>
                     <div class="audio-content">
                         <audio class="audio-player" controls>
-                            <source src="https://www.soundjay.com/button/button-1.mp3" type="audio/mpeg">
+                            <source src="audio/yu-zizhen-full.mp3" type="audio/mpeg">
                             您的浏览器不支持音频播放。
                         </audio>
                         <div class="audio-description">
                             郁子贞老先生回忆凤山高小时期的校园风貌、教学情况和学生生活，是研究学校早期历史的重要口述资料。
                         </div>
                         <div class="audio-versions">
-                            <button class="version-btn" data-audio="https://www.soundjay.com/button/button-1.mp3">完整版 (45分钟)</button>
-                            <button class="version-btn" data-audio="https://www.soundjay.com/button/button-2.mp3">精华版 (15分钟)</button>
+                            <button class="version-btn" onclick="playAudioVersion('yu-zizhen-full.mp3')">完整版 (45分钟)</button>
+                            <button class="version-btn" onclick="playAudioVersion('yu-zizhen-short.mp3')">精华版 (15分钟)</button>
                         </div>
                     </div>
                 </div>
@@ -1038,15 +842,15 @@
                     </div>
                     <div class="audio-content">
                         <audio class="audio-player" controls>
-                            <source src="https://www.soundjay.com/button/button-3.mp3" type="audio/mpeg">
+                            <source src="audio/zhang-jiguang-full.mp3" type="audio/mpeg">
                             您的浏览器不支持音频播放。
                         </audio>
                         <div class="audio-description">
                             张戢光校长回忆文革期间学校更名为"换新天小学"和"东风小学"的特殊时期，以及如何在困难条件下坚持办学。
                         </div>
                         <div class="audio-versions">
-                            <button class="version-btn" data-audio="https://www.soundjay.com/button/button-3.mp3">完整版 (38分钟)</button>
-                            <button class="version-btn" data-audio="https://www.soundjay.com/button/button-4.mp3">精华版 (12分钟)</button>
+                            <button class="version-btn" onclick="playAudioVersion('zhang-jiguang-full.mp3')">完整版 (38分钟)</button>
+                            <button class="version-btn" onclick="playAudioVersion('zhang-jiguang-short.mp3')">精华版 (12分钟)</button>
                         </div>
                     </div>
                 </div>
@@ -1058,15 +862,15 @@
                     </div>
                     <div class="audio-content">
                         <audio class="audio-player" controls>
-                            <source src="https://www.soundjay.com/button/button-5.mp3" type="audio/mpeg">
+                            <source src="audio/ding-xiuyuan-full.mp3" type="audio/mpeg">
                             您的浏览器不支持音频播放。
                         </audio>
                         <div class="audio-description">
                             丁修元校长讲述改革开放初期学校的现代化建设，包括引进计算机教室、修建标准运动场等重要举措。
                         </div>
                         <div class="audio-versions">
-                            <button class="version-btn" data-audio="https://www.soundjay.com/button/button-5.mp3">完整版 (52分钟)</button>
-                            <button class="version-btn" data-audio="https://www.soundjay.com/button/button-6.mp3">精华版 (18分钟)</button>
+                            <button class="version-btn" onclick="playAudioVersion('ding-xiuyuan-full.mp3')">完整版 (52分钟)</button>
+                            <button class="version-btn" onclick="playAudioVersion('ding-xiuyuan-short.mp3')">精华版 (18分钟)</button>
                         </div>
                     </div>
                 </div>
@@ -1078,15 +882,15 @@
                     </div>
                     <div class="audio-content">
                         <audio class="audio-player" controls>
-                            <source src="https://www.soundjay.com/button/button-7.mp3" type="audio/mpeg">
+                            <source src="audio/qin-yu-full.mp3" type="audio/mpeg">
                             您的浏览器不支持音频播放。
                         </audio>
                         <div class="audio-description">
                             全国文教先进个人秦瑜老师分享从教四十年的心得体会，讲述教育理念的变化和与学生之间的感人故事。
                         </div>
                         <div class="audio-versions">
-                            <button class="version-btn" data-audio="https://www.soundjay.com/button/button-7.mp3">完整版 (48分钟)</button>
-                            <button class="version-btn" data-audio="https://www.soundjay.com/button/button-8.mp3">精华版 (16分钟)</button>
+                            <button class="version-btn" onclick="playAudioVersion('qin-yu-full.mp3')">完整版 (48分钟)</button>
+                            <button class="version-btn" onclick="playAudioVersion('qin-yu-short.mp3')">精华版 (16分钟)</button>
                         </div>
                     </div>
                 </div>
@@ -1105,8 +909,8 @@
             <div class="video-library">
                 <!-- 视频卡片 -->
                 <div class="video-card">
-                    <div class="video-player" data-video="https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/BigBuckBunny.mp4" data-title="学校100周年校庆盛典">
-                        <img src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='400' height='300' viewBox='0 0 400 300'%3E%3Crect width='400' height='300' fill='%234a6fa5'/%3E%3Ctext x='50%25' y='50%25' dominant-baseline='middle' text-anchor='middle' font-family='Arial' font-size='24' fill='white'%3E学校100周年校庆盛典%3C/text%3E%3C/svg%3E" alt="学校100周年校庆盛典">
+                    <div class="video-player" onclick="playVideo('videos/100th-anniversary.mp4', '学校100周年校庆盛典')">
+                        <img src="images/videos/100th-anniversary-thumb.jpg" alt="学校100周年校庆盛典">
                         <div class="play-icon">
                             <i class="fas fa-play"></i>
                         </div>
@@ -1119,8 +923,8 @@
                 </div>
                 
                 <div class="video-card">
-                    <div class="video-player" data-video="https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/ElephantsDream.mp4" data-title="1998年学校迁址仪式">
-                        <img src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='400' height='300' viewBox='0 0 400 300'%3E%3Crect width='400' height='300' fill='%236bbf8a'/%3E%3Ctext x='50%25' y='50%25' dominant-baseline='middle' text-anchor='middle' font-family='Arial' font-size='24' fill='white'%3E1998年学校迁址仪式%3C/text%3E%3C/svg%3E" alt="1998年学校迁址仪式">
+                    <div class="video-player" onclick="playVideo('videos/1998-relocation.mp4', '1998年学校迁址仪式')">
+                        <img src="images/videos/1998-relocation-thumb.jpg" alt="1998年学校迁址仪式">
                         <div class="play-icon">
                             <i class="fas fa-play"></i>
                         </div>
@@ -1133,8 +937,8 @@
                 </div>
                 
                 <div class="video-card">
-                    <div class="video-player" data-video="https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/ForBiggerBlazes.mp4" data-title="2010年恢复公办体制庆典">
-                        <img src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='400' height='300' viewBox='0 0 400 300'%3E%3Crect width='400' height='300' fill='%23e76f51'/%3E%3Ctext x='50%25' y='50%25' dominant-baseline='middle' text-anchor='middle' font-family='Arial' font-size='24' fill='white'%3E2010年恢复公办体制庆典%3C/text%3E%3C/svg%3E" alt="2010年恢复公办体制庆典">
+                    <div class="video-player" onclick="playVideo('videos/2010-restoration.mp4', '2010年恢复公办体制庆典')">
+                        <img src="images/videos/2010-restoration-thumb.jpg" alt="2010年恢复公办体制庆典">
                         <div class="play-icon">
                             <i class="fas fa-play"></i>
                         </div>
@@ -1173,7 +977,7 @@
                 <!-- 建校初期人物 -->
                 <div class="figure-card active" data-era="1900s">
                     <div class="figure-img">
-                        <img src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='400' height='300' viewBox='0 0 400 300'%3E%3Crect width='400' height='300' fill='%234a6fa5'/%3E%3Ctext x='50%25' y='50%25' dominant-baseline='middle' text-anchor='middle' font-family='Arial' font-size='24' fill='white'%3E郁子贞%3C/text%3E%3C/svg%3E" alt="郁子贞">
+                        <img src="images/people/8.1975年教师合影.jpg" alt="郁子贞">
                     </div>
                     <div class="figure-content">
                         <div class="figure-name">郁子贞</div>
@@ -1196,7 +1000,7 @@
                 <!-- 1950年代人物 -->
                 <div class="figure-card active" data-era="1950s">
                     <div class="figure-img">
-                        <img src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='400' height='300' viewBox='0 0 400 300'%3E%3Crect width='400' height='300' fill='%236bbf8a'/%3E%3Ctext x='50%25' y='50%25' dominant-baseline='middle' text-anchor='middle' font-family='Arial' font-size='24' fill='white'%3E张如娟%3C/text%3E%3C/svg%3E" alt="张如娟">
+                        <img src="images/people/4.1957年全校女教师合影.jpg" alt="张如娟">
                     </div>
                     <div class="figure-content">
                         <div class="figure-name">张如娟</div>
@@ -1219,7 +1023,7 @@
                 <!-- 1960年代人物 -->
                 <div class="figure-card active" data-era="1960s">
                     <div class="figure-img">
-                        <img src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='400' height='300' viewBox='0 0 400 300'%3E%3Crect width='400' height='300' fill='%23e76f51'/%3E%3Ctext x='50%25' y='50%25' dominant-baseline='middle' text-anchor='middle' font-family='Arial' font-size='24' fill='white'%3E张戢光%3C/text%3E%3C/svg%3E" alt="张戢光">
+                        <img src="images/people/校长4张戢光.jpg" alt="张戢光">
                     </div>
                     <div class="figure-content">
                         <div class="figure-name">张戢光</div>
@@ -1242,7 +1046,7 @@
                 <!-- 1980年代人物 -->
                 <div class="figure-card active" data-era="1980s">
                     <div class="figure-img">
-                        <img src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='400' height='300' viewBox='0 0 400 300'%3E%3Crect width='400' height='300' fill='%234a6fa5'/%3E%3Ctext x='50%25' y='50%25' dominant-baseline='middle' text-anchor='middle' font-family='Arial' font-size='24' fill='white'%3E丁修元%3C/text%3E%3C/svg%3E" alt="丁修元">
+                        <img src="images/people/校长7丁修元.jpg" alt="丁修元">
                     </div>
                     <div class="figure-content">
                         <div class="figure-name">丁修元</div>
@@ -1265,7 +1069,7 @@
                 <!-- 1990年代人物 -->
                 <div class="figure-card active" data-era="1990s">
                     <div class="figure-img">
-                        <img src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='400' height='300' viewBox='0 0 400 300'%3E%3Crect width='400' height='300' fill='%236bbf8a'/%3E%3Ctext x='50%25' y='50%25' dominant-baseline='middle' text-anchor='middle' font-family='Arial' font-size='24' fill='white'%3E金沙%3C/text%3E%3C/svg%3E" alt="金沙">
+                        <img src="images/people/校长8金沙.jpg" alt="金沙">
                     </div>
                     <div class="figure-content">
                         <div class="figure-name">金沙</div>
@@ -1288,7 +1092,7 @@
                 <!-- 2000年代人物 -->
                 <div class="figure-card active" data-era="2000s">
                     <div class="figure-img">
-                        <img src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='400' height='300' viewBox='0 0 400 300'%3E%3Crect width='400' height='300' fill='%23e76f51'/%3E%3Ctext x='50%25' y='50%25' dominant-baseline='middle' text-anchor='middle' font-family='Arial' font-size='24' fill='white'%3E秦瑜%3C/text%3E%3C/svg%3E" alt="秦瑜">
+                        <img src="images/people/教师照片-2.jpg" alt="秦瑜">
                     </div>
                     <div class="figure-content">
                         <div class="figure-name">秦瑜</div>
@@ -1316,22 +1120,22 @@
         <div class="container">
             <div class="footer-content">
                 <div class="footer-section">
-                    <h3>我们的目标</h3>
+                    <h3>关于我们</h3>
                     <p>"我们的校园记忆"线上数字博物馆致力于保存和展示校园历史文化</p>
                 </div>
                 <div class="footer-section">
-                    <h3>关于我们</h3>
-                    <p>作者：全体同学</p>
-                    <p>技术指导：班主任-林柏娟</p>
+                    <h3>联系我们</h3>
+                    <p>邮箱：campusmemory@example.com</p>
+                    <p>电话：010-12345678</p>
                 </div>
                 <div class="footer-section">
-                    <h3>祝愿</h3>
-                    <p>学校越来越好</p>
-                    <p>我们的前程似锦</p>
+                    <h3>关注我们</h3>
+                    <p>微信公众号：校园记忆</p>
+                    <p>微博：@我们的校园记忆</p>
                 </div>
             </div>
             <div class="footer-bottom">
-                <p>&copy; 2025 凤山小学六年级21班 版权所有</p>
+                <p>&copy; 2025 我们的校园记忆线上数字博物馆 版权所有</p>
             </div>
         </div>
     </footer>
@@ -1356,6 +1160,7 @@
         </div>
     </div>
 
+    <script src="js/main.js"></script>
     <script>
         // 导航切换功能
         document.querySelectorAll('.nav-item').forEach(item => {
@@ -1424,57 +1229,26 @@
         }
         
         // 音频版本切换功能
-        document.querySelectorAll('.version-btn').forEach(btn => {
-            btn.addEventListener('click', function() {
-                const audioFile = this.getAttribute('data-audio');
-                const audioPlayer = this.closest('.audio-content').querySelector('.audio-player');
-                const source = audioPlayer.querySelector('source');
-                
-                // 切换音频源
-                source.src = audioFile;
-                audioPlayer.load();
-                audioPlayer.play().catch(e => {
-                    console.error('音频播放失败:', e);
-                    alert('音频加载失败，请检查文件路径或网络连接');
-                });
-            });
-        });
+        function playAudioVersion(audioFile) {
+            alert(`正在加载音频: ${audioFile}\n注：实际应用中这里会切换音频源`);
+        }
         
         // 视频播放功能
-        document.querySelectorAll('.video-player').forEach(player => {
-            player.addEventListener('click', function() {
-                const videoSrc = this.getAttribute('data-video');
-                const title = this.getAttribute('data-title');
-                
-                const mediaViewer = document.getElementById('mediaViewer');
-                const fullscreenVideo = document.getElementById('fullscreenVideo');
-                const mediaViewerTitle = document.getElementById('mediaViewerTitle');
-                const mediaViewerCaption = document.getElementById('mediaViewerCaption');
-                
-                // 清除之前的源
-                fullscreenVideo.innerHTML = '';
-                
-                // 创建新的source元素
-                const source = document.createElement('source');
-                source.src = videoSrc;
-                source.type = 'video/mp4';
-                fullscreenVideo.appendChild(source);
-                
-                fullscreenVideo.style.display = 'block';
-                document.getElementById('fullscreenImage').style.display = 'none';
-                mediaViewerTitle.textContent = title;
-                mediaViewerCaption.textContent = title;
-                
-                mediaViewer.classList.add('active');
-                
-                // 加载并播放视频
-                fullscreenVideo.load();
-                fullscreenVideo.play().catch(e => {
-                    console.error('视频播放失败:', e);
-                    alert('视频加载失败，请检查文件路径或格式支持');
-                });
-            });
-        });
+        function playVideo(videoSrc, title) {
+            const mediaViewer = document.getElementById('mediaViewer');
+            const fullscreenVideo = document.getElementById('fullscreenVideo');
+            const mediaViewerTitle = document.getElementById('mediaViewerTitle');
+            const mediaViewerCaption = document.getElementById('mediaViewerCaption');
+            
+            fullscreenVideo.src = videoSrc;
+            fullscreenVideo.style.display = 'block';
+            document.getElementById('fullscreenImage').style.display = 'none';
+            mediaViewerTitle.textContent = title;
+            mediaViewerCaption.textContent = title;
+            
+            mediaViewer.classList.add('active');
+            fullscreenVideo.play();
+        }
         
         // 人物志年代筛选功能
         document.querySelectorAll('.timeline-btn').forEach(btn => {
