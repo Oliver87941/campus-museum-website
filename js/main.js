@@ -232,4 +232,99 @@ if (typeof module !== 'undefined' && module.exports) {
         initImageViewer,
         initFilterButtons
     };
+
 }
+// 背景音乐控制功能
+function initBackgroundMusic() {
+    // 创建音频元素
+    const bgMusic = document.createElement('audio');
+    bgMusic.id = 'backgroundMusic';
+    bgMusic.loop = true;
+    bgMusic.volume = 0.3; // 设置较低的音量
+    
+    // 添加多个音频源以支持不同浏览器
+    const source1 = document.createElement('source');
+    source1.src = 'audio/background-music.mp3';
+    source1.type = 'audio/mpeg';
+    
+    const source2 = document.createElement('source');
+    source2.src = 'audio/background-music.ogg';
+    source2.type = 'audio/ogg';
+    
+    bgMusic.appendChild(source1);
+    bgMusic.appendChild(source2);
+    document.body.appendChild(bgMusic);
+    
+    // 创建音乐控制按钮
+    const musicControl = document.createElement('div');
+    musicControl.id = 'musicControl';
+    musicControl.className = 'music-control';
+    musicControl.innerHTML = `
+        <button id="toggleMusic" class="music-btn">
+            <i class="fas fa-volume-up"></i>
+        </button>
+        <div class="music-tooltip">背景音乐</div>
+    `;
+    document.body.appendChild(musicControl);
+    
+    // 从本地存储获取音乐状态
+    const musicEnabled = localStorage.getItem('backgroundMusic') !== 'false';
+    
+    if (musicEnabled) {
+        // 尝试播放音乐（需要用户交互）
+        const playMusic = () => {
+            bgMusic.play().catch(e => {
+                console.log('自动播放被阻止，需要用户交互');
+            });
+            document.removeEventListener('click', playMusic);
+            document.removeEventListener('keydown', playMusic);
+        };
+        
+        // 添加事件监听器，等待用户交互
+        document.addEventListener('click', playMusic);
+        document.addEventListener('keydown', playMusic);
+        
+        musicControl.classList.add('playing');
+    } else {
+        musicControl.classList.remove('playing');
+    }
+    
+    // 音乐切换功能
+    document.getElementById('toggleMusic').addEventListener('click', function() {
+        if (bgMusic.paused) {
+            bgMusic.play();
+            musicControl.classList.add('playing');
+            localStorage.setItem('backgroundMusic', 'true');
+        } else {
+            bgMusic.pause();
+            musicControl.classList.remove('playing');
+            localStorage.setItem('backgroundMusic', 'false');
+        }
+    });
+    
+    // 处理音频加载错误
+    bgMusic.addEventListener('error', function() {
+        console.error('背景音乐加载失败');
+        musicControl.style.display = 'none';
+    });
+}
+
+// 初始化函数
+document.addEventListener('DOMContentLoaded', function() {
+    initSmoothScroll();
+    initCardAnimations();
+    initImageViewer();
+    initBackgroundMusic(); // 添加背景音乐初始化
+    
+    // 图片错误处理
+    document.querySelectorAll('img').forEach(img => {
+        img.addEventListener('error', function() {
+            handleImageError(this);
+        });
+    });
+    
+    // 初始化筛选功能
+    initFilterButtons('.decade-btn', '.photo-card', 'data-year');
+    initFilterButtons('.timeline-btn', '.figure-card', 'data-era');
+    initFilterButtons('.symbiosis-btn', '.symbiosis-card', 'data-area');
+});
