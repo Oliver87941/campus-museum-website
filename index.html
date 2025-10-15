@@ -333,8 +333,12 @@
                 };
                 img.src = `images/backgrounds/${season}.jpg`;
             });
+            
+            // 初始化背景音乐
+            if (typeof initBackgroundMusic === 'function') {
+                initBackgroundMusic();
+            }
         });
     </script>
 </body>
-
 </html>
