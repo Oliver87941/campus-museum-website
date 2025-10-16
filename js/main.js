@@ -203,144 +203,98 @@ function initFilterButtons(buttonClass, cardClass, dataAttribute) {
     });
 }
 
-// 背景音乐控制功能 - 修复版本
+// 背景音乐控制功能 - 简化可靠版本
 function initBackgroundMusic() {
-    console.log('🎵 初始化背景音乐...');
+    console.log('初始化背景音乐...');
     
-    // 检查是否已存在音乐控制元素，避免重复创建
+    // 如果已经存在，不再重复创建
     if (document.getElementById('musicControl')) {
-        console.log('🎵 音乐控制已存在，跳过初始化');
         return;
     }
     
-    try {
-        // 创建音频元素
-        const bgMusic = document.createElement('audio');
-        bgMusic.id = 'backgroundMusic';
-        bgMusic.loop = true;
-        bgMusic.volume = 0.3;
-        bgMusic.preload = 'auto';
-        
-        // 添加音频源
-        const source = document.createElement('source');
-        source.src = 'audio/background-music.mp3';
-        source.type = 'audio/mpeg';
-        bgMusic.appendChild(source);
-        
-        // 添加到body
-        document.body.appendChild(bgMusic);
-        console.log('🎵 音频元素创建成功');
-
-        // 创建音乐控制按钮
-        const musicControl = document.createElement('div');
-        musicControl.id = 'musicControl';
-        musicControl.className = 'music-control';
-        musicControl.innerHTML = `
+    // 创建音乐控制界面
+    const musicHTML = `
+        <div id="musicControl" class="music-control">
             <button id="toggleMusic" class="music-btn">
                 <i class="fas fa-volume-up"></i>
-                <i class="fas fa-volume-mute" style="display: none;"></i>
             </button>
-            <div class="music-tooltip">点击播放背景音乐</div>
-        `;
-        document.body.appendChild(musicControl);
-        console.log('🎵 音乐控制按钮创建成功');
-
-        // 从本地存储获取音乐状态
-        let musicEnabled = localStorage.getItem('backgroundMusic') !== 'false';
-        console.log('🎵 初始音乐状态:', musicEnabled ? '启用' : '禁用');
-
-        // 更新按钮状态
-        function updateButtonState() {
-            const btn = document.getElementById('toggleMusic');
-            const volumeUp = btn.querySelector('.fa-volume-up');
-            const volumeMute = btn.querySelector('.fa-volume-mute');
-            
-            if (!bgMusic.paused && musicEnabled) {
-                volumeUp.style.display = 'inline';
-                volumeMute.style.display = 'none';
-                musicControl.classList.add('playing');
-            } else {
-                volumeUp.style.display = 'none';
-                volumeMute.style.display = 'inline';
-                musicControl.classList.remove('playing');
-            }
+            <div class="music-tooltip">背景音乐</div>
+        </div>
+        <audio id="backgroundMusic" loop preload="auto">
+            <source src="audio/background-music.mp3" type="audio/mpeg">
+            您的浏览器不支持音频元素。
+        </audio>
+    `;
+    
+    document.body.insertAdjacentHTML('beforeend', musicHTML);
+    
+    const bgMusic = document.getElementById('backgroundMusic');
+    const toggleBtn = document.getElementById('toggleMusic');
+    const musicControl = document.getElementById('musicControl');
+    
+    // 设置音量
+    bgMusic.volume = 0.3;
+    
+    // 从本地存储获取音乐状态
+    let musicEnabled = localStorage.getItem('backgroundMusic') !== 'false';
+    
+    // 更新按钮状态
+    function updateButtonState() {
+        if (!bgMusic.paused && musicEnabled) {
+            musicControl.classList.add('playing');
+        } else {
+            musicControl.classList.remove('playing');
         }
-
-        // 音频事件监听
-        bgMusic.addEventListener('loadeddata', function() {
-            console.log('🎵 音频文件加载完成');
-            updateButtonState();
-        });
-
-        bgMusic.addEventListener('error', function(e) {
-            console.error('🎵 音频加载失败:', e);
-            console.error('🎵 文件路径:', source.src);
-            musicControl.style.display = 'none';
-        });
-
-        bgMusic.addEventListener('play', function() {
-            console.log('🎵 音乐开始播放');
-            musicEnabled = true;
-            localStorage.setItem('backgroundMusic', 'true');
-            updateButtonState();
-        });
-
-        bgMusic.addEventListener('pause', function() {
-            console.log('🎵 音乐暂停');
-            updateButtonState();
-        });
-
-        // 音乐切换功能
-        document.getElementById('toggleMusic').addEventListener('click', function(e) {
-            e.stopPropagation();
-            console.log('🎵 点击音乐按钮');
-            
-            if (bgMusic.paused) {
-                console.log('🎵 尝试播放音乐...');
-                bgMusic.play().then(() => {
-                    console.log('🎵 音乐播放成功');
-                }).catch(error => {
-                    console.error('🎵 播放失败:', error);
-                    // 显示提示
-                    alert('请点击页面任意位置后，再点击音乐按钮播放');
-                });
-            } else {
-                bgMusic.pause();
-                musicEnabled = false;
-                localStorage.setItem('backgroundMusic', 'false');
-                console.log('🎵 音乐已暂停');
-            }
-        });
-
-        // 页面点击时尝试自动播放（如果用户之前启用了音乐）
-        const tryAutoPlay = function() {
-            if (musicEnabled && bgMusic.paused) {
-                console.log('🎵 用户交互，尝试自动播放...');
-                bgMusic.play().then(() => {
-                    console.log('🎵 自动播放成功');
-                }).catch(error => {
-                    console.log('🎵 自动播放被阻止，需要用户手动点击');
-                });
-            }
-            // 移除事件监听，避免重复
-            document.removeEventListener('click', tryAutoPlay);
-            document.removeEventListener('keydown', tryAutoPlay);
-            document.removeEventListener('scroll', tryAutoPlay);
-        };
-
-        // 添加用户交互监听
-        document.addEventListener('click', tryAutoPlay);
-        document.addEventListener('keydown', tryAutoPlay);
-        document.addEventListener('scroll', tryAutoPlay);
-
-        // 初始状态更新
-        updateButtonState();
-        
-        console.log('🎵 背景音乐初始化完成');
-
-    } catch (error) {
-        console.error('🎵 背景音乐初始化失败:', error);
     }
+    
+    // 音乐切换功能
+    toggleBtn.addEventListener('click', function() {
+        if (bgMusic.paused) {
+            // 尝试播放音乐
+            bgMusic.play().then(() => {
+                musicEnabled = true;
+                localStorage.setItem('backgroundMusic', 'true');
+                updateButtonState();
+                console.log('音乐播放成功');
+            }).catch(error => {
+                console.log('播放失败，需要用户交互:', error);
+                // 显示提示
+                alert('请先点击页面任意位置，然后再点击音乐按钮播放背景音乐');
+            });
+        } else {
+            bgMusic.pause();
+            musicEnabled = false;
+            localStorage.setItem('backgroundMusic', 'false');
+            updateButtonState();
+        }
+    });
+    
+    // 页面点击时尝试自动播放（如果用户之前启用了音乐）
+    const tryAutoPlay = function() {
+        if (musicEnabled && bgMusic.paused) {
+            bgMusic.play().then(() => {
+                updateButtonState();
+            }).catch(error => {
+                // 自动播放被阻止是正常的，不需要处理
+            });
+        }
+        // 移除事件监听，避免重复
+        document.removeEventListener('click', tryAutoPlay);
+        document.removeEventListener('keydown', tryAutoPlay);
+    };
+    
+    // 添加用户交互监听
+    document.addEventListener('click', tryAutoPlay);
+    document.addEventListener('keydown', tryAutoPlay);
+    
+    // 初始状态
+    updateButtonState();
+    
+    // 错误处理
+    bgMusic.addEventListener('error', function() {
+        console.error('背景音乐加载失败');
+        musicControl.style.display = 'none';
+    });
 }
 
 // 初始化函数
@@ -348,7 +302,7 @@ document.addEventListener('DOMContentLoaded', function() {
     initSmoothScroll();
     initCardAnimations();
     initImageViewer();
-    initBackgroundMusic(); // 添加背景音乐初始化
+    initBackgroundMusic(); // 初始化背景音乐
     
     // 图片错误处理
     document.querySelectorAll('img').forEach(img => {
@@ -374,4 +328,3 @@ if (typeof module !== 'undefined' && module.exports) {
         initFilterButtons
     };
 }
-
