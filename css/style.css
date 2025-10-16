@@ -391,12 +391,12 @@ footer {
     background: var(--secondary-color);
 }
 
-.music-control:not(.playing) .music-btn {
-    background: #999;
+.music-control.playing .music-btn {
+    background: var(--primary-color);
 }
 
-.music-control:not(.playing) .music-btn i {
-    opacity: 0.7;
+.music-control:not(.playing) .music-btn {
+    background: #999;
 }
 
 .music-tooltip {
