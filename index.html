@@ -322,7 +322,15 @@
                 homepage.className = 'homepage ' + season + '-bg';
             });
         });
-
+            // 页面加载完成后初始化
+    document.addEventListener('DOMContentLoaded', function() {
+        console.log('🏠 首页加载完成');
+        if (typeof initBackgroundMusic === 'function') {
+            initBackgroundMusic();
+        } else {
+            console.error('❌ initBackgroundMusic 函数未找到');
+        }
+    });
         // 处理背景图片加载失败
         window.addEventListener('load', function() {
             const seasons = ['spring', 'summer', 'autumn', 'winter'];
@@ -342,4 +350,5 @@
     </script>
 </body>
 </html>
+
 
