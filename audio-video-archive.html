@@ -1150,6 +1150,12 @@
     <script src="js/main.js"></script>
     <script>
         // 导航切换功能
+            document.addEventListener('DOMContentLoaded', function() {
+        // 其他初始化代码...
+        if (typeof initBackgroundMusic === 'function') {
+            initBackgroundMusic();
+        }
+    });
         document.querySelectorAll('.nav-item').forEach(item => {
             item.addEventListener('click', function() {
                 // 移除所有导航项的active类
@@ -1393,6 +1399,7 @@
     </script>
 </body>
 </html>
+
 
 
 
